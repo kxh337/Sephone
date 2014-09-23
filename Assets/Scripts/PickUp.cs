@@ -5,9 +5,10 @@ using System.Collections;
 public class PickUp : MonoBehaviour {
 
 
-	private int[] inventoryArray = {1};
+	public int[] inventoryArray = {1};
 	public GameObject inventoryText;
 	private float distance = 3.0F;
+
 
 
 	void pickUpItem() 
