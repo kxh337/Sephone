@@ -7,12 +7,13 @@ public class AIPathFinder : MonoBehaviour {
 	Seeker seeker;
 	Path path;
 	int currentWaypoint;
-	public float speed = 20;
-	public float wayPointDist = 2f;
+	public float speed;
+	public float wayPointDist;
 	CharacterController charctlr;
 	public float waitTime;
 	float curTime;
 	public Transform player;
+	public float repathDist;
 
 	// Use this for initialization
 	void Start () {
@@ -22,7 +23,8 @@ public class AIPathFinder : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Time.time > curTime+waitTime){
+		float dist = Vector3.Distance(transform.position,target.position);
+		if(Time.time > curTime+waitTime && dist >= repathDist){
 			seeker = GetComponent<Seeker>();
 			seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
 			charctlr = GetComponent<CharacterController>();
