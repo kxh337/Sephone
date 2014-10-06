@@ -28,5 +28,9 @@ public class Item {
 		itemType = type;
 		itemIcon = Resources.Load<Texture2D>("Item Icons/" + name);
 	}
+	public Item() 
+	{
+
+	}
 
 }

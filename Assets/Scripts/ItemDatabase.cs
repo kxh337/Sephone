@@ -9,5 +9,6 @@ public class ItemDatabase : MonoBehaviour {
 	void Start() 
 	{
 		items.Add(new Item("pendant", 0, "An enchanted pendant", 2, 0, Item.ItemType.Quest));
+		items.Add(new Item("shirt", 1, "A white shirt", 0, 0, Item.ItemType.Consumable));
 	}
 }
