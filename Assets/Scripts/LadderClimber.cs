@@ -11,18 +11,17 @@ public class LadderClimber : MonoBehaviour {
 	public float climbSpeed = 3;
 	public bool onLadder = false;
 	public int incidentAngle = 20;
-	
-	// Use this for initialization
+
 	void Start () {
 		pMot = GetComponent<CharacterMotor> ();
 		pInput = GetComponent<FPSInputController> ();
 		pMov = pMot.movement;	
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
  		if (closeToLadder) {
 			if (!onLadder) {
+				// If not on ladder, climb only when walk towards its front
 				if (Input.GetAxis ("Vertical") > 0) {
 					Vector3 camAngle = Camera.main.transform.forward;
 					Vector3 colAngle = ladder.transform.forward;
@@ -34,10 +33,12 @@ public class LadderClimber : MonoBehaviour {
 					}
 				}
 			} else {
+				// If on lader, move up or down based on input
 				if (Input.GetAxis ("Vertical") > 0) {
 					pMov.velocity.y = climbSpeed;
 				} else if (Input.GetAxis ("Vertical") < 0) {
 					pMov.velocity.y = -climbSpeed;
+					// Moving backwards unclimb if on ground
 					if (pMot.grounded) {
 						unclimb ();
 					}
