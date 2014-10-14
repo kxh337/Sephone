@@ -14,7 +14,9 @@ public class AIPathFinder : MonoBehaviour {
 	float curTime;
 	public Transform player;
 	public float repathDist;
+	public float yOffset;
 	private float dist;
+	private Vector3 yPLayerPosition;
 
 	// Use this for initialization
 	void Start () {
@@ -33,6 +35,7 @@ public class AIPathFinder : MonoBehaviour {
 			charctlr = GetComponent<CharacterController>();
 			curTime = Time.time;
 		}
+		transform.position = new Vector3(transform.position.x,player.position.y + yOffset,transform.position.z);
 	}
 
 	public void OnPathComplete(Path p){
