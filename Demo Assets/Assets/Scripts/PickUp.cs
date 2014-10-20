@@ -27,9 +27,29 @@ public class PickUp : MonoBehaviour {
 	}
 	void Update() 
 	{
+		checkItemProximity();
 		if (Input.GetButtonDown("Fire3")) 
 		{
 			pickUpItem();
+		}
+
+
+	}
+
+	void checkItemProximity()
+	{
+		RaycastHit hit;
+		if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
+		{
+			if(hit.distance < distance) 
+			{
+				CheckItem check = new CheckItem();
+				hit.transform.SendMessage("setItemName", check, SendMessageOptions.DontRequireReceiver);
+				int textWidth = 250;
+				int textHeight = 50;
+				GUI.Label(new Rect((Screen.width / 2) - (textWidth / 2), (Screen.height / 1.2f) - (textHeight / 2), textWidth, 
+				                   textHeight), "Left click to pick up " + check.itemName);
+			}
 		}
 	}
 }

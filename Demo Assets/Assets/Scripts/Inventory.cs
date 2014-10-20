@@ -19,6 +19,7 @@ public class Inventory : MonoBehaviour {
 
 
 
+
 	// Use this for initialization
 	void Start () {
 		for(int i = 0; i < slotX * slotY; i++) 
@@ -27,7 +28,6 @@ public class Inventory : MonoBehaviour {
 			inventory.Add(new Item());
 		}
 		database = GameObject.FindGameObjectWithTag("ItemDatabase").GetComponent<ItemDatabase>();
-
 	}
 	
 	void Update() 
@@ -35,6 +35,7 @@ public class Inventory : MonoBehaviour {
 		int canPause = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
 		if (Input.GetButtonDown("Inventory") && (canPause == 0 || canPause == 2))
 		{
+			audio.Play();
 			showInventory = !showInventory;
 			togglePause();
 		}
@@ -49,7 +50,8 @@ public class Inventory : MonoBehaviour {
 			DrawInventory();
 			if(showTooltip && tooltip != "")
 			{
-				GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 150, 100), tooltip, skin.GetStyle("tooltip"));
+				float dynamicSize = skin.box.CalcHeight(new GUIContent(tooltip), 200);
+				GUI.Box(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 200, dynamicSize + 10), tooltip, skin.GetStyle("tooltip"));
 			}
 		}
 		if(dragItem) 
@@ -61,6 +63,9 @@ public class Inventory : MonoBehaviour {
 
 	void DrawInventory() 
 	{
+		//this.audio.PlayOneShot(notebookFlip, 1.0f);
+
+
 		Event e = Event.current;
 		int i = 0;
 		GUI.DrawTexture(new Rect(0, 0, (Screen.width / 3), (Screen.height)), invTexture); 
@@ -68,7 +73,8 @@ public class Inventory : MonoBehaviour {
 		{
 			for(int x = 0; x < slotX; x++)
 			{
-				Rect slotRect = new Rect(x * 75 + 160, y * 75 + 150, 70, 70);
+				//Rect slotRect = new Rect(x * 75 + 160, y * 75 + 150, 70, 70);
+				Rect slotRect = new Rect(x * 75 + (Screen.width / 8), y * 75 + (Screen.width / 8), 70, 70);
 				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
 
 				slots[i] = inventory[i];
@@ -94,6 +100,15 @@ public class Inventory : MonoBehaviour {
 							itemDragged = null;
 						}
 					}
+					if(tooltip == "")
+					{
+						showTooltip = false;
+					}
+					//Show the note if the user right clicks an item that is readable
+					if(e.isMouse && e.type == EventType.mouseDown && e.button == 1)
+					{
+
+					}
 				}
 				else 
 				{
@@ -114,7 +129,7 @@ public class Inventory : MonoBehaviour {
 
 	string CreateTooltip(Item item) 
 	{
-		tooltip = "         "  + item.itemName + "\n\n" + "  " + item.itemDescription;
+		tooltip = "<color=#0000FF>"  + item.itemName + "</color>\n\n" + "<color=#663300>" + item.itemDescription + "</color>";
 		return tooltip;
 	}
 

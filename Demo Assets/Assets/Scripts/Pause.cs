@@ -7,7 +7,7 @@ public class Pause : MonoBehaviour {
 	private int buttonWidth = 200;
 	private int buttonHeight = 50;
 	private int groupWidth = 200;
-	private int groupHeight = 290;
+	private int groupHeight = 320;
 	private bool gamePaused = false; 
 	public Texture2D inventoryText;
 	public Texture2D quitText;
@@ -29,10 +29,6 @@ public class Pause : MonoBehaviour {
 		{
 			gamePaused = togglePause();
 		}
-		/*if(!gamePaused) 
-		{
-			Screen.lockCursor = true;
-		}*/
 	
 	}
 
@@ -60,7 +56,7 @@ public class Pause : MonoBehaviour {
 			{
 
 			}
-			if(GUI.Button(new Rect(0, 230, buttonWidth, buttonHeight), quitText))
+			if(GUI.Button(new Rect(0, 240, buttonWidth, buttonHeight), quitText))
 			{
 				
 			}
