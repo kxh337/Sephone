@@ -2,7 +2,8 @@
 using System.Collections;
 using Pathfinding;
 
-public class AIPathFinder : MonoBehaviour {
+public class GhostTwoPoint : MonoBehaviour {
+
 	private Vector3 target;
 	Seeker seeker;
 	Path path;
@@ -13,48 +14,52 @@ public class AIPathFinder : MonoBehaviour {
 	public float waitTime;
 	float curTime;
 	public Transform player;
-	public float repathDist;
-	public float yOffset;
+	public Transform pointA;
+	public Transform pointB;
 	private float dist;
 	private Vector3 yPLayerPosition;
-
+	private bool sighted;
+	private bool atA;
+	private bool atB;
+	private float sightDistance;
+	
 	// Use this for initialization
 	void Start () {
 		curTime = Time.time;
-//		Physics.IgnoreCollision(transform.collider, player.collider);
+		//		Physics.IgnoreCollision(transform.collider, player.collider);
 		dist = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		target = player.position +  (Vector3)(Random.insideUnitCircle*2) +Vector3.back; 
+	
+
 		dist = Vector3.Distance(transform.position,target);
-		if(Time.time > curTime+waitTime && dist >= repathDist){
+		if(Time.time > curTime+waitTime){
 			seeker = GetComponent<Seeker>();
 			seeker.StartPath(transform.position,target,OnPathComplete);
 			charctlr = GetComponent<CharacterController>();
 			curTime = Time.time;
 		}
-		//transform.position = new Vector3(transform.position.x,player.position.y + yOffset,transform.position.z);
 	}
-
+	
 	public void OnPathComplete(Path p){
 		if(!p.error){
 			path = p;
 			currentWaypoint = 0	;
 		}
 		else{
-
+			
 		}
-
+		
 	}
-
+	
 	public Vector3 getLastWP() {
 		return path.vectorPath [currentWaypoint - 2];
 	}
-
+	
 	void FixedUpdate(){
-		speed = dist/150;
+		speed = dist/1500;
 		if(path == null){
 			return;
 		}
@@ -67,4 +72,5 @@ public class AIPathFinder : MonoBehaviour {
 			currentWaypoint++;
 		}
 	}
+
 }
