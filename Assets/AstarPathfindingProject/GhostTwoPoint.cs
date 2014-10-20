@@ -26,15 +26,31 @@ public class GhostTwoPoint : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		curTime = Time.time;
+		target = pointA.position;
 		//		Physics.IgnoreCollision(transform.collider, player.collider);
-		dist = 1;
+		dist = .1f;
+		sighted =false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-
-		dist = Vector3.Distance(transform.position,target);
+		if(Vector3.Distance(transform.position,player.position)<10){
+			sighted = true;
+			target = player.position;
+			Debug.Log(sighted);
+		}	
+		float distA = Vector3.Distance(transform.position,pointA.position);
+		float distB = Vector3.Distance(transform.position,pointB.position);
+		if(distA<2){
+			atA = true;
+			atB = false;
+			target = pointB.position;
+		}
+		if(distB<2){
+			atB = true;
+			atA = false;
+			target = pointA.position;
+		}
 		if(Time.time > curTime+waitTime){
 			seeker = GetComponent<Seeker>();
 			seeker.StartPath(transform.position,target,OnPathComplete);
@@ -59,7 +75,7 @@ public class GhostTwoPoint : MonoBehaviour {
 	}
 	
 	void FixedUpdate(){
-		speed = dist/1500;
+		speed = dist/1;
 		if(path == null){
 			return;
 		}
