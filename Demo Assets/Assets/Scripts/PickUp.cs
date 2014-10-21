@@ -8,7 +8,10 @@ public class PickUp : MonoBehaviour {
 
 	private float distance = 3.0F;
 	private Inventory inv;
-
+	public CheckItem check;
+	public int textWidth = 250;
+	public int textHeight = 50;
+	private bool showText = false;
 
 	void pickUpItem() 
 	{
@@ -27,7 +30,6 @@ public class PickUp : MonoBehaviour {
 	}
 	void Update() 
 	{
-		checkItemProximity();
 		if (Input.GetButtonDown("Fire3")) 
 		{
 			pickUpItem();
@@ -36,20 +38,40 @@ public class PickUp : MonoBehaviour {
 
 	}
 
+	void Start()
+	{
+		InvokeRepeating("checkItemProximity", 0.0f, 0.1f);
+	}
+
+
+
 	void checkItemProximity()
 	{
-		RaycastHit hit;
-		if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
+		RaycastHit hit1;
+		if(Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit1))
 		{
-			if(hit.distance < distance) 
+			if(hit1.distance < distance) 
 			{
-				CheckItem check = new CheckItem();
-				hit.transform.SendMessage("setItemName", check, SendMessageOptions.DontRequireReceiver);
-				int textWidth = 250;
-				int textHeight = 50;
-				GUI.Label(new Rect((Screen.width / 2) - (textWidth / 2), (Screen.height / 1.2f) - (textHeight / 2), textWidth, 
-				                   textHeight), "Left click to pick up " + check.itemName);
+				check = new CheckItem();
+				hit1.transform.SendMessage("setItemName", check, SendMessageOptions.DontRequireReceiver);
+				if(check.itemName != null)
+				{
+					showText = true;
+				}
+				else
+				{
+					showText = false;
+				}
 			}
 		}
+	}
+	void OnGUI()
+	{
+		if(showText)
+		{
+			GUI.Label(new Rect((Screen.width / 2) - (textWidth / 2), (Screen.height / 1.2f) - (textHeight / 2), textWidth, 
+			                   textHeight), "Left click to pick up " + check.itemName);
+		}
+
 	}
 }
