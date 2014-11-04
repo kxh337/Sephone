@@ -3,7 +3,7 @@ using System.Collections;
 using Pathfinding;
 
 public class AIPathFinder : MonoBehaviour {
-	public Transform target;
+	private Vector3 target;
 	Seeker seeker;
 	Path path;
 	int currentWaypoint;
@@ -14,22 +14,28 @@ public class AIPathFinder : MonoBehaviour {
 	float curTime;
 	public Transform player;
 	public float repathDist;
+	public float yOffset;
+	private float dist;
+	private Vector3 yPLayerPosition;
 
 	// Use this for initialization
 	void Start () {
 		curTime = Time.time;
-		Physics.IgnoreCollision(transform.collider, player.collider);
+//		Physics.IgnoreCollision(transform.collider, player.collider);
+		dist = 1;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		float dist = Vector3.Distance(transform.position,target.position);
+		target = player.position +  (Vector3)(Random.insideUnitCircle*2) +Vector3.back; 
+		dist = Vector3.Distance(transform.position,target);
 		if(Time.time > curTime+waitTime && dist >= repathDist){
 			seeker = GetComponent<Seeker>();
-			seeker.StartPath(transform.position,target.transform.position,OnPathComplete);
+			seeker.StartPath(transform.position,target,OnPathComplete);
 			charctlr = GetComponent<CharacterController>();
 			curTime = Time.time;
 		}
+		//transform.position = new Vector3(transform.position.x,player.position.y + yOffset,transform.position.z);
 	}
 
 	public void OnPathComplete(Path p){
@@ -48,6 +54,7 @@ public class AIPathFinder : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
+		speed = dist/150;
 		if(path == null){
 			return;
 		}
