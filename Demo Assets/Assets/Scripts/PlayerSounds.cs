@@ -14,10 +14,12 @@ public class PlayerSounds : MonoBehaviour {
 		if(controller.velocity.sqrMagnitude != 0 && (Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0))
 		{
 			audio.enabled = true;
+			audio.volume = 1.0f;
 			audio.loop = true;
 		}
 		else{
 			audio.enabled = false;
+			audio.volume = 0.0f;
 			audio.loop = false;
 		}
 	}

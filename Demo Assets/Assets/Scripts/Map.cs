@@ -4,8 +4,8 @@ using System.Collections;
 public class Map : MonoBehaviour {
 	public Texture2D mapSource;
 	public Texture2D mapCoverSource;
-	public int width = 256;
-	public int height = 256;
+	//public int width = Screen.width / 3;
+	//public int height = Screen.height;
 	public int visionPercentage = 3;
 	
 	Texture2D map;
@@ -19,6 +19,8 @@ public class Map : MonoBehaviour {
 
 	void Start() {
 
+		int width = Screen.width / 3;
+		int height = Screen.height;
 		if (mapSource == null) {
 			mapSource = new Texture2D (width, height);
 		}
@@ -39,7 +41,7 @@ public class Map : MonoBehaviour {
 
 		refWidth = renderer.bounds.max.x - renderer.bounds.min.x;
 		refHeight = renderer.bounds.max.z - renderer.bounds.min.z;
-		InvokeRepeating("UpdateMap", 0.0f, 1.0f);
+		InvokeRepeating("UpdateMap", 0.0f, 0.5f);
 	}
 
 	void OnGUI() {
@@ -51,6 +53,7 @@ public class Map : MonoBehaviour {
 	void Update()
 	{
 		if(Input.GetButtonDown("map")) {
+			audio.Play();
 			showMap = (true && !showMap);
 		}
 	}
@@ -61,8 +64,8 @@ public class Map : MonoBehaviour {
 		float pz = GameObject.FindWithTag("Player").transform.position.z - renderer.bounds.min.z;
 		int y = Mathf.RoundToInt(pz * mapCover.height / refHeight);
 
-		paintCircle (mapCover, x, y, visionPixels, Color.clear);
-		paintCircle (mapCover, x, y, visionPixels / 5, Color.red);
+		//paintCircle (mapCover, 50, 50, visionPixels, Color.clear);
+		//paintCircle (mapCover, 50, 50, visionPixels / 3, Color.red);
 	}
 
 	void paintCircle(Texture2D tex, int cx, int cy, int r, Color col)

@@ -18,12 +18,10 @@ public class SoundTrigger : MonoBehaviour {
 	void Update () {
 		if(Vector3.Distance(transform.position, player.position) < triggerdist && !played){
 			audio.Play();
-			Debug.Log(Vector3.Distance(transform.position, player.position));
-			Debug.Log("Playing");
 			played = true;
 		}
-		else if(Vector3.Distance(transform.position, player.position) > triggerdist){
+		/*else if(Vector3.Distance(transform.position, player.position) > triggerdist){
 			played = false;
-		}
+		}*/
 	}
 }

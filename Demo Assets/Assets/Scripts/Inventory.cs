@@ -16,12 +16,15 @@ public class Inventory : MonoBehaviour {
 	private Item itemDragged;
 	private int prevIndex;
 	public Texture2D invTexture;
-
+	bool showNote = false;
+	public Texture2D currentNote;
+	public Vector2 scrollPosition = Vector2.zero;
 
 
 
 	// Use this for initialization
 	void Start () {
+		Screen.lockCursor = true;
 		for(int i = 0; i < slotX * slotY; i++) 
 		{
 			slots.Add(new Item());
@@ -58,7 +61,19 @@ public class Inventory : MonoBehaviour {
 		{
 			GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, 70, 70), itemDragged.itemIcon);
 		}
+		if(showNote && currentNote != null)
+		{
+			int noteWidth = currentNote.width;
+			int noteHeight = currentNote.height;
+			scrollPosition = GUI.BeginScrollView(new Rect((Screen.width - Screen.width / 3) / 2, 0.0f, Screen.width / 3,
+			                                              Screen.height), scrollPosition, 
+			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
 
+			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
+			                         noteWidth, noteHeight), currentNote);
+
+			GUI.EndScrollView();
+		}
 	}
 
 	void DrawInventory() 
@@ -73,18 +88,21 @@ public class Inventory : MonoBehaviour {
 		{
 			for(int x = 0; x < slotX; x++)
 			{
-				//Rect slotRect = new Rect(x * 75 + 160, y * 75 + 150, 70, 70);
-				Rect slotRect = new Rect(x * 75 + (Screen.width / 8), y * 75 + (Screen.width / 8), 70, 70);
+				Rect slotRect = new Rect(x * (Screen.width / 17) + (Screen.width / 10), y * (Screen.width / 17) + (Screen.width / 8), (Screen.width / 20), (Screen.width / 20));
 				GUI.Box(slotRect, "", skin.GetStyle("Slot"));
 
 				slots[i] = inventory[i];
+				//For each slot that has an item in it, draw it
 				if(slots[i].itemName != null) 
 				{
 					GUI.DrawTexture(slotRect, slots[i].itemIcon);
-					if(slotRect.Contains(e.mousePosition))
+					//Checks if the user places the mouse above a item slot that is currently being drawn
+					if(slotRect.Contains(e.mousePosition) && !showNote)
 					{
+						//Create and show the tooltip
 						CreateTooltip(slots[i]);
 						showTooltip = true;
+						//If the user is dragging the mouse over this slot, then we draw the item icon beneath the cursor
 						if(e.button == 0 && e.type == EventType.mouseDrag && !dragItem)
 						{
 							dragItem = true;
@@ -92,6 +110,9 @@ public class Inventory : MonoBehaviour {
 							itemDragged = slots[i];
 							inventory[i] = new Item();
 						}
+
+						//If the user releases the previously dragged item over a slot that contains an item,
+						//swap the two item slots
 						if(e.type == EventType.mouseUp && dragItem) 
 						{
 							inventory[prevIndex] = inventory[i];
@@ -104,16 +125,26 @@ public class Inventory : MonoBehaviour {
 					{
 						showTooltip = false;
 					}
-					//Show the note if the user right clicks an item that is readable
-					if(e.isMouse && e.type == EventType.mouseDown && e.button == 1)
-					{
+					//Show the note if the user left-double-clicks a readable item
 
+					if(e.isMouse && e.button == 0 && e.clickCount == 2)
+					{
+						showNote = true;
+						currentNote = slots[i].noteTexture;
+					}
+					if(showNote) {
+
+
+						if(e.isMouse && e.button == 1 && e.clickCount == 2)
+							showNote = false;
 					}
 				}
 				else 
 				{
+					//In the case when the user positions the mouse above an empty slot
 					if(slotRect.Contains(e.mousePosition))
 					{
+						//If the user was previously dragging an item, then drop the item into the empty slot here
 						if(e.type == EventType.mouseUp && dragItem) 
 						{
 							inventory[i] = itemDragged;
