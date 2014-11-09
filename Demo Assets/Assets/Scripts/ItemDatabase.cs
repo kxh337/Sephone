@@ -8,8 +8,8 @@ public class ItemDatabase : MonoBehaviour {
 
 	void Start() 
 	{
-		items.Add(new Item("Hairclip", 1, "Found on the ground", Item.ItemType.Quest));
-		items.Add(new Item("Jacks", 2, "Part of a puzzle", Item.ItemType.Quest));
-		items.Add(new Item("Note", 3, "A doctor's note", Item.ItemType.Quest));
+		items.Add(new Item("Hairclip", 1, "Found on the ground", false, Item.ItemType.Quest));
+		items.Add(new Item("Jacks", 2, "Part of a puzzle", false, Item.ItemType.Quest));
+		items.Add(new Item("Note", 3, "A doctor's note", true, Item.ItemType.Quest));
 	}
 }

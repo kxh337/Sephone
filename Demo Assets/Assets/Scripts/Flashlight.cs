@@ -4,6 +4,7 @@ using System.Collections;
 public class Flashlight : MonoBehaviour {
 
 	bool isLightOn = false;
+	public AudioSource source;
 	// Use this for initialization
 	void Start () {
 
@@ -14,6 +15,7 @@ public class Flashlight : MonoBehaviour {
 		if(Input.GetButtonDown("Flashlight")) 
 		{
 			isLightOn = !isLightOn;
+			audio.Play();
 		}
 		if(isLightOn) 
 		{

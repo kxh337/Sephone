@@ -63,6 +63,8 @@ public class PickUp : MonoBehaviour {
 					showText = false;
 				}
 			}
+			else
+				showText = false;
 		}
 	}
 	void OnGUI()
