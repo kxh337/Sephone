@@ -46,16 +46,22 @@ public class Map : MonoBehaviour {
 
 	void OnGUI() {
 		if(showMap) {
-			GUI.DrawTexture (position, map);
+			//GUI.DrawTexture (position, map);
 			GUI.DrawTexture (position, mapCover);
+			if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			{
+				showMap= false;
+				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
+				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
+			}
 		}
 	}
 	void Update()
 	{
-		if(Input.GetButtonDown("map")) {
+		/*if(Input.GetButtonDown("map")) {
 			audio.Play();
 			showMap = (true && !showMap);
-		}
+		}*/
 	}
 	void UpdateMap () {
 
@@ -81,5 +87,12 @@ public class Map : MonoBehaviour {
 		}
 
 		tex.Apply ();
+	}
+
+	public void turnMapOn() {
+		showMap = true;
+	}
+	public void turnMapOff() {
+		showMap = false;
 	}
 }

@@ -17,8 +17,10 @@ public class Inventory : MonoBehaviour {
 	private int prevIndex;
 	public Texture2D invTexture;
 	bool showNote = false;
-	public Texture2D currentNote;
+	private Texture2D currentNote;
+	public Texture2D logTabTexture;
 	public Vector2 scrollPosition = Vector2.zero;
+	protected int tabSelected = 0;  //0 is for the inventory tab, 1 is for the map tab, 2 is for the log tab
 
 
 
@@ -35,13 +37,15 @@ public class Inventory : MonoBehaviour {
 	
 	void Update() 
 	{
+
 		int canPause = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
-		if (Input.GetButtonDown("Inventory") && (canPause == 0 || canPause == 2))
+		if (Input.GetButtonDown("Notebook") && (canPause == 0 || canPause == 2))
 		{
 			audio.Play();
 			showInventory = !showInventory;
 			togglePause();
 		}
+
 	}
 
 	void OnGUI() 
@@ -68,19 +72,41 @@ public class Inventory : MonoBehaviour {
 			scrollPosition = GUI.BeginScrollView(new Rect((Screen.width - Screen.width / 3) / 2, 0.0f, Screen.width / 3,
 			                                              Screen.height), scrollPosition, 
 			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
-
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
 			                         noteWidth, noteHeight), currentNote);
 
 			GUI.EndScrollView();
 		}
+
+		Event ev = Event.current;
+		if(tabSelected == 1) 
+		{
+			Rect logTab1 = new Rect((Screen.width / 3) * 0.902f , 0.4215f * Screen.height, 0.05798f * (Screen.width / 3),
+			                        0.1686f * Screen.height);
+
+			if(ev != null && ev.type == EventType.mouseUp && logTab1.Contains(ev.mousePosition))
+			{
+				tabSelected = 2;
+				audio.Play();
+				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
+			}
+
+		}
+		if(tabSelected == 2)
+		{
+			GUI.DrawTexture(new Rect(0, 0, (Screen.width / 3), (Screen.height)), logTabTexture);
+			if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			{
+				audio.Play ();
+				tabSelected = 1;
+				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+			}
+		}
+
 	}
 
 	void DrawInventory() 
 	{
-		//this.audio.PlayOneShot(notebookFlip, 1.0f);
-
-
 		Event e = Event.current;
 		int i = 0;
 		GUI.DrawTexture(new Rect(0, 0, (Screen.width / 3), (Screen.height)), invTexture); 
@@ -127,8 +153,9 @@ public class Inventory : MonoBehaviour {
 					}
 					//Show the note if the user left-double-clicks a readable item
 
-					if(e.isMouse && e.button == 0 && e.clickCount == 2)
+					if(e.isMouse && e.button == 0 && e.clickCount == 2 && slots[i].isReadable)
 					{
+						Debug.Log("Slots[i] != null");
 						showNote = true;
 						currentNote = slots[i].noteTexture;
 					}
@@ -155,6 +182,31 @@ public class Inventory : MonoBehaviour {
 				}
 				i++;
 			}
+		}
+		//Now check if the mouse is clicking one of the tabs
+		Rect invTab = new Rect((Screen.width / 3) * 0.902f , 0.0843f * Screen.height, 0.05798f * (Screen.width / 3),
+		                       0.1686f * Screen.height);
+		Rect mapTab = new Rect((Screen.width / 3) * 0.902f , 0.2529f * Screen.height, 0.05798f * (Screen.width / 3),
+		                       0.1686f * Screen.height);
+		Rect logTab = new Rect((Screen.width / 3) * 0.902f , 0.4215f * Screen.height, 0.05798f * (Screen.width / 3),
+		                       0.1686f * Screen.height);
+		if(e.type == EventType.mouseUp && !dragItem && invTab.Contains(e.mousePosition)) 
+		{
+
+		}
+		else if(e.type == EventType.mouseUp && !dragItem && mapTab.Contains(e.mousePosition))
+		{
+			showInventory = false;
+			audio.Play();
+			GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+			tabSelected = 1;
+		}
+		else if(e.type == EventType.mouseUp && !dragItem && logTab.Contains(e.mousePosition))
+		{
+			showInventory = false;
+			audio.Play();
+			GUI.DrawTexture(new Rect(0, 0, (Screen.width / 3), (Screen.height)), logTabTexture);
+			tabSelected = 2;
 		}
 	}
 
@@ -230,4 +282,12 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
+	public void backToInvTab() {
+		tabSelected = 0;
+		showInventory = true;
+	}
+
+	public void playNotebookFlipSound() {
+		audio.Play();
+	}
 }
