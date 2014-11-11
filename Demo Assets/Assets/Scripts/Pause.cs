@@ -39,10 +39,11 @@ public class Pause : MonoBehaviour {
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), pauseScreen); 
 			GUI.BeginGroup(new Rect(((Screen.width / 2) - (groupWidth / 2)), ((Screen.height / 2) - (groupHeight / 2) + 60),
 			                        groupWidth, groupHeight));
-			if(GUI.Button(new Rect(0, 0, buttonWidth, buttonHeight), loadText))
+			GUI.Button(new Rect(0, 0, buttonWidth, buttonHeight), loadText);
+			/*if(GUI.Button(new Rect(0, 0, buttonWidth, buttonHeight), loadText))
 			{
 
-			}
+			}*/
 			if(GUI.Button(new Rect(0, 60, buttonWidth, buttonHeight), resumeText))
 			{
 				gamePaused = false;
