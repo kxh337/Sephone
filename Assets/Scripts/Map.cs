@@ -4,37 +4,27 @@ using System.Collections;
 public class Map : MonoBehaviour {
 	public Texture2D mapSource;
 	public Rect position = new Rect(0, 0, 256, 256);
-	public int visionPercentage = 3;
+	public int visionPercentage = 10;
 	public float updateInterval = 3;
 	
 	Texture2D map;
 	Color32[] bitmap;
-	int[] alpha;
+	byte[,] alpha;
 	float refWidth;
 	float refHeight;
 	int visionPixels;
-	
-	Vector3 PlayerPos;
+
 	GameObject Player;
 	Bounds refObjBounds;
+	bool showMap = false;
 	
 	void Start() {
-		if (mapSource == null) {
-			mapSource = new Texture2D ((int)position.width, (int)position.height);
-		}
-		bitmap = mapSource.GetPixels32();
-		PlayerPos = GameObject.FindWithTag("Player").transform.position;
+		setupMap ();
+
 		Player = GameObject.FindWithTag("Player");
 		refObjBounds = renderer.bounds;
 
-		clearBitmap();
-
-		map = new Texture2D(mapSource.width, mapSource.height);
-		map.SetPixels32(bitmap);
-		map.Apply();
-
 		visionPixels = (map.height + map.width) / 200 * visionPercentage;
-		alpha = new int[visionPixels * visionPixels];
 		refWidth = (refObjBounds.max.x - refObjBounds.min.x);
 		refHeight =  (refObjBounds.max.z - refObjBounds.min.z);
 		
@@ -43,45 +33,66 @@ public class Map : MonoBehaviour {
 	}
 	
 	void OnGUI() {
-		GUI.DrawTexture (position, map);
+//		if (showMap) {
+			GUI.DrawTexture (position, map);
+//		}
 	}
 
-	void clearBitmap() {
+	void setupMap() {
+		if (mapSource == null) {
+			mapSource = new Texture2D ((int)position.width, (int)position.height);
+		}
+		bitmap = mapSource.GetPixels32();
+		for (int i = 0; i < bitmap.Length; i++)
+			bitmap[i].a = 0;
 
+		map = new Texture2D(mapSource.width, mapSource.height);
+		map.SetPixels32(bitmap);
+		map.Apply();
 	}
 	
 	void UpdateMap () {
 		int x = Mathf.RoundToInt((Player.transform.position.x - refObjBounds.min.x) * map.width / refWidth);
 		int y = Mathf.RoundToInt((Player.transform.position.z - refObjBounds.min.z) * map.height /refHeight);
-//		print (x);
-//		print (y);
 		paintCircle (x, y);
 	}
-	
+
 	void makeCircle() {
+		alpha = new byte[visionPixels,visionPixels];
 		int r = visionPixels/2;
 		for(int x = 0; x < visionPixels; x++)
 		for(int y = 0; y < visionPixels; y++) {
 			float dx = x-r, dy=y-r;
 			float dist = Mathf.Sqrt(dx*dx+dy*dy);
 			
-			alpha[y * x + x] = Mathf.RoundToInt( Mathf.Min(0.0f, ((r - dist) / r * 255) ));
+			alpha[x,y] = (byte) Mathf.Max(0, 255 - (dist * 255 / r));
 		}
 	}
-	
+
+//	void Update()
+//	{
+//		if(Input.GetButtonDown("map")) {
+//			showMap = !showMap;
+//		}
+//	}
+
 	void paintCircle(int cx, int cy)
 	{
-		for (int y = Mathf.Min (0, cy - visionPixels / 2), ay = cy - y;
-		     y < map.height && ay < visionPixels;
-		     y += map.width, ay++) {
-			for (int x = Mathf.Min (0, cx - visionPixels / 2), ax = cx - x;
-			     x < bitmap.Length && ax < visionPixels;
-			     x++, ax++) {
-				print (y + " " + x + " " + ay + " " + ax );
-				bitmap[y + x].a = (byte) alpha[ay + ax];
-			}
+		int r = visionPixels / 2;
+		for(int x= cx - r; x < cx+r; x++)
+		for(int y= cy - r; y < cy+r; y++) {
+			byte a = alpha[x - (cx - r), y - (cy - r)];
+			if(a > bitmap[y*map.width + x].a)
+				bitmap[y*map.width + x].a = a;
 		}
 		map.SetPixels32 (bitmap);
 		map.Apply ();
+	}
+	
+	public void turnMapOn() {
+		showMap = true;
+	}
+	public void turnMapOff() {
+		showMap = false;
 	}
 }
