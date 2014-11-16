@@ -43,7 +43,6 @@ public class Map : MonoBehaviour {
 		if(showMap) {
 			Event ev = Event.current;
 			//GUI.DrawTexture (position, map);
-			GUI.DrawTexture (position, mapCover);
 			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
 			GUI.DrawTexture(buttonArea, backButton);
 			if(buttonArea.Contains(ev.mousePosition))
