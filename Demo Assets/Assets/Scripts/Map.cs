@@ -3,50 +3,43 @@ using System.Collections;
 
 public class Map : MonoBehaviour {
 	public Texture2D mapSource;
-	public Texture2D mapCoverSource;
-	//public int width = Screen.width / 3;
-	//public int height = Screen.height;
-	public int visionPercentage = 3;
-	
+	public Rect position = new Rect(0, 0, 256, 256);
+	public int visionPercentage = 10;
+	public float updateInterval = 3;
+	public Texture2D tempMapCover;
 	Texture2D map;
-	Texture2D mapCover;
+	Color32[] bitmap;
+	byte[,] alpha;
 	float refWidth;
 	float refHeight;
-	Rect position;
 	int visionPixels;
+//<<<<<<< HEAD
 	public Texture2D backButton;
 	public Texture2D backButtonGlow;
 
+//=======
+	
+	GameObject Player;
+	Bounds refObjBounds;
+//>>>>>>> origin/master
 	bool showMap = false;
-
+	
 	void Start() {
-
-		int width = Screen.width / 3;
-		int height = Screen.height;
-		if (mapSource == null) {
-			mapSource = new Texture2D (width, height);
-		}
-		if (mapCoverSource == null) {
-			mapCoverSource = new Texture2D (width, height);
-		}
-
-		map = new Texture2D(mapSource.width, mapSource.height);
-		map.SetPixels32(mapSource.GetPixels32());
-		map.Apply();
+		setupMap ();
 		
-		mapCover = new Texture2D(mapCoverSource.width, mapCoverSource.height);
-		mapCover.SetPixels32(mapCoverSource.GetPixels32());
-		mapCover.Apply();
-
-		position = new Rect (0, 0, width, height);
-		visionPixels = (mapCover.height + mapCover.width) / 200 * visionPercentage;
-
-		refWidth = renderer.bounds.max.x - renderer.bounds.min.x;
-		refHeight = renderer.bounds.max.z - renderer.bounds.min.z;
-		InvokeRepeating("UpdateMap", 0.0f, 0.5f);
+		Player = GameObject.FindWithTag("Player");
+		refObjBounds = renderer.bounds;
+		
+		visionPixels = (map.height + map.width) / 200 * visionPercentage;
+		refWidth = (refObjBounds.max.x - refObjBounds.min.x);
+		refHeight =  (refObjBounds.max.z - refObjBounds.min.z);
+		
+		makeCircle ();
+		InvokeRepeating("UpdateMap", 0, updateInterval);
 	}
-
+	
 	void OnGUI() {
+//<<<<<<< HEAD
 		if(showMap) {
 			Event ev = Event.current;
 			//GUI.DrawTexture (position, map);
@@ -70,40 +63,64 @@ public class Map : MonoBehaviour {
 				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
 			}*/
 		}
+//=======
+		//		if (showMap) {
+		GUI.DrawTexture (position, map);
+		//		}
+//>>>>>>> origin/master
 	}
-	void Update()
-	{
-		/*if(Input.GetButtonDown("map")) {
-			audio.Play();
-			showMap = (true && !showMap);
-		}*/
+	
+	void setupMap() {
+		if (mapSource == null) {
+			mapSource = new Texture2D ((int)position.width, (int)position.height);
+		}
+		bitmap = mapSource.GetPixels32();
+		for (int i = 0; i < bitmap.Length; i++)
+			bitmap[i].a = 0;
+		
+		map = new Texture2D(mapSource.width, mapSource.height);
+		map.SetPixels32(bitmap);
+		map.Apply();
 	}
+	
 	void UpdateMap () {
-
-		float px = GameObject.FindWithTag("Player").transform.position.x - renderer.bounds.min.x;
-		int x = Mathf.RoundToInt(px * mapCover.width / refWidth);
-		float pz = GameObject.FindWithTag("Player").transform.position.z - renderer.bounds.min.z;
-		int y = Mathf.RoundToInt(pz * mapCover.height / refHeight);
-
-		//paintCircle (mapCover, 50, 50, visionPixels, Color.clear);
-		//paintCircle (mapCover, 50, 50, visionPixels / 3, Color.red);
+		int x = Mathf.RoundToInt((Player.transform.position.x - refObjBounds.min.x) * map.width / refWidth);
+		int y = Mathf.RoundToInt((Player.transform.position.z - refObjBounds.min.z) * map.height /refHeight);
+		paintCircle (x, y);
 	}
-
-	void paintCircle(Texture2D tex, int cx, int cy, int r, Color col)
-	{
-		for(int x= cx - r; x < cx+r; x++)
-		for(int y= cy - r; y < cy+r; y++) {
-			
-			float dx = x-cx, dy=y-cy;
+	
+	void makeCircle() {
+		alpha = new byte[visionPixels,visionPixels];
+		int r = visionPixels/2;
+		for(int x = 0; x < visionPixels; x++)
+		for(int y = 0; y < visionPixels; y++) {
+			float dx = x-r, dy=y-r;
 			float dist = Mathf.Sqrt(dx*dx+dy*dy);
 			
-			if(dist<r)
-				tex.SetPixel(x, y, col);
+			alpha[x,y] = (byte) Mathf.Max(0, 255 - (dist * 255 / r));
 		}
-
-		tex.Apply ();
 	}
-
+	
+	//	void Update()
+	//	{
+	//		if(Input.GetButtonDown("map")) {
+	//			showMap = !showMap;
+	//		}
+	//	}
+	
+	void paintCircle(int cx, int cy)
+	{
+		int r = visionPixels / 2;
+		for(int x= cx - r; x < cx+r; x++)
+		for(int y= cy - r; y < cy+r; y++) {
+			byte a = alpha[x - (cx - r), y - (cy - r)];
+			if(a > bitmap[y*map.width + x].a)
+				bitmap[y*map.width + x].a = a;
+		}
+		map.SetPixels32 (bitmap);
+		map.Apply ();
+	}
+	
 	public void turnMapOn() {
 		showMap = true;
 	}
