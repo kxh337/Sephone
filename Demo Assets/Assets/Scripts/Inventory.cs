@@ -20,7 +20,10 @@ public class Inventory : MonoBehaviour {
 	private Texture2D currentNote;
 	public Texture2D logTabTexture;
 	public Vector2 scrollPosition = Vector2.zero;
-	protected int tabSelected = 0;  //0 is for the inventory tab, 1 is for the map tab, 2 is for the log tab
+	public Texture2D backButton;
+	public Texture2D backButtonGlow;
+	protected int tabSelected = -1;  //-1 is for when the inventory is closed 
+									//0 is for the inventory tab, 1 is for the map tab, 2 is for the log tab
 
 
 
@@ -42,7 +45,20 @@ public class Inventory : MonoBehaviour {
 		if (Input.GetButtonDown("Notebook") && (canPause == 0 || canPause == 2))
 		{
 			audio.Play();
-			showInventory = !showInventory;
+			showNote = false;
+			if(Time.timeScale == 0) //Turning the notebook off
+				showInventory = false;
+			else
+				showInventory = true;
+			if(tabSelected == -1)
+				tabSelected = 0;
+			else if(tabSelected == 1)
+			{
+				tabSelected = -1;
+				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
+			}
+			else
+				tabSelected = -1;
 			togglePause();
 		}
 
@@ -70,12 +86,17 @@ public class Inventory : MonoBehaviour {
 			int noteWidth = currentNote.width;
 			int noteHeight = currentNote.height;
 			scrollPosition = GUI.BeginScrollView(new Rect((Screen.width - Screen.width / 3) / 2, 0.0f, Screen.width / 3,
-			                                              Screen.height), scrollPosition, 
+			                                              Screen.height * 0.9f), scrollPosition, 
 			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
+												//Don't forget to change this!! The vertical position of the note texture
+												//is hard coded right now, must change before final!!!!
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
 			                         noteWidth, noteHeight), currentNote);
 
 			GUI.EndScrollView();
+			GUI.skin = skin;
+			GUI.Label(new Rect((Screen.width - Screen.width / 3) / 2, Screen.height * 0.95f, Screen.width / 3, Screen.height / 10),
+			          "Right click to close note");
 		}
 
 		Event ev = Event.current;
@@ -95,12 +116,24 @@ public class Inventory : MonoBehaviour {
 		if(tabSelected == 2)
 		{
 			GUI.DrawTexture(new Rect(0, 0, (Screen.width / 3), (Screen.height)), logTabTexture);
-			if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
+			GUI.DrawTexture(buttonArea, backButton);
+			if(buttonArea.Contains(ev.mousePosition))
+			{
+				GUI.DrawTexture(buttonArea, backButtonGlow);
+			}
+			if(buttonArea.Contains(ev.mousePosition) && ev.isMouse && ev.type == EventType.mouseUp)
 			{
 				audio.Play ();
 				tabSelected = 1;
 				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
 			}
+			/*if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			{
+				audio.Play ();
+				tabSelected = 1;
+				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+			}*/
 		}
 
 	}
@@ -153,16 +186,15 @@ public class Inventory : MonoBehaviour {
 					}
 					//Show the note if the user left-double-clicks a readable item
 
-					if(e.isMouse && e.button == 0 && e.clickCount == 2 && slots[i].isReadable)
+					if(e.isMouse && e.button == 0 && e.clickCount == 2 && slots[i].isReadable && slotRect.Contains(e.mousePosition))
 					{
-						Debug.Log("Slots[i] != null");
 						showNote = true;
 						currentNote = slots[i].noteTexture;
 					}
 					if(showNote) {
 
-
-						if(e.isMouse && e.button == 1 && e.clickCount == 2)
+						//Closes the note if the player right clicks once
+						if(e.isMouse && e.button == 1 && e.clickCount == 1)
 							showNote = false;
 					}
 				}
@@ -194,14 +226,14 @@ public class Inventory : MonoBehaviour {
 		{
 
 		}
-		else if(e.type == EventType.mouseUp && !dragItem && mapTab.Contains(e.mousePosition))
+		else if(e.type == EventType.mouseUp && !dragItem && mapTab.Contains(e.mousePosition) && tabSelected != -1 && !showNote)
 		{
 			showInventory = false;
 			audio.Play();
 			GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
 			tabSelected = 1;
 		}
-		else if(e.type == EventType.mouseUp && !dragItem && logTab.Contains(e.mousePosition))
+		else if(e.type == EventType.mouseUp && !dragItem && logTab.Contains(e.mousePosition) && tabSelected != -1 && !showNote)
 		{
 			showInventory = false;
 			audio.Play();

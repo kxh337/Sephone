@@ -14,6 +14,8 @@ public class Map : MonoBehaviour {
 	float refHeight;
 	Rect position;
 	int visionPixels;
+	public Texture2D backButton;
+	public Texture2D backButtonGlow;
 
 	bool showMap = false;
 
@@ -46,14 +48,27 @@ public class Map : MonoBehaviour {
 
 	void OnGUI() {
 		if(showMap) {
+			Event ev = Event.current;
 			//GUI.DrawTexture (position, map);
 			GUI.DrawTexture (position, mapCover);
-			if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
+			GUI.DrawTexture(buttonArea, backButton);
+			if(buttonArea.Contains(ev.mousePosition))
+			{
+				GUI.DrawTexture(buttonArea, backButtonGlow);
+			}
+			if(buttonArea.Contains(ev.mousePosition) && ev.isMouse && ev.type == EventType.mouseUp)
 			{
 				showMap= false;
 				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
 				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
 			}
+			/*if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
+			{
+				showMap= false;
+				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
+				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
+			}*/
 		}
 	}
 	void Update()

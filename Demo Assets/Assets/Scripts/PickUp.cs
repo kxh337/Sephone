@@ -12,6 +12,7 @@ public class PickUp : MonoBehaviour {
 	public int textWidth = 250;
 	public int textHeight = 50;
 	private bool showText = false;
+	public GUISkin guiSkin;
 
 	void pickUpItem() 
 	{
@@ -71,6 +72,7 @@ public class PickUp : MonoBehaviour {
 	{
 		if(showText)
 		{
+			GUI.skin = guiSkin;
 			GUI.Label(new Rect((Screen.width / 2) - (textWidth / 2), (Screen.height / 1.2f) - (textHeight / 2), textWidth, 
 			                   textHeight), "Left click to pick up " + check.itemName);
 		}
