@@ -65,7 +65,7 @@ public class Map : MonoBehaviour {
 		}
 //=======
 		//		if (showMap) {
-		//GUI.DrawTexture (position, map);
+		GUI.DrawTexture (position, map);
 		//		}
 //>>>>>>> origin/master
 	}
