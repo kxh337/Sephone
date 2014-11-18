@@ -8,7 +8,7 @@ public class GhostJ : GenericGhost {
 	public Transform point3;
 	public Transform point4;
 	public float minDist;
-	public float smooth;
+	public float speed;
 	public float pointDist;
 	private Transform nextPoint;
 
@@ -32,7 +32,8 @@ public class GhostJ : GenericGhost {
 			//have it turn towards the player and play audio maybe
 		}
 		else{
-			transform.position = Vector3.Lerp(transform.position,nextPoint.position, smooth * Time.deltaTime);
+			Vector3 dir = nextPoint.position - transform.position;
+			transform.Translate(dir / dir.magnitude *speed * Time.deltaTime); 
 		}
 		if(Vector3.Distance(transform.position, point1.position)< pointDist){
 			nextPoint = point2;

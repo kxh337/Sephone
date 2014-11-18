@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GhostG : MonoBehaviour {
-
+public class GhostG : GenericGhost {
+	public AIPathFinder finder;
 	// Use this for initialization
 	void Start () {
 	
@@ -10,6 +10,6 @@ public class GhostG : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		finder.entered = triggered;
 	}
 }

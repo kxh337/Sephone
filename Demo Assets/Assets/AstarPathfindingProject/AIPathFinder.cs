@@ -17,24 +17,35 @@ public class AIPathFinder : MonoBehaviour {
 	public float yOffset;
 	private float dist;
 	private Vector3 yPLayerPosition;
+	public bool entered;
+	public Transform center;
 
 	// Use this for initialization
 	void Start () {
 		curTime = Time.time;
 //		Physics.IgnoreCollision(transform.collider, player.collider);
 		dist = 1;
+		entered = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		target = player.position +  (Vector3)(Random.insideUnitCircle*2) +Vector3.back; 
-		dist = Vector3.Distance(transform.position,target);
-		if(Time.time > curTime+waitTime && dist >= repathDist){
+		if(Time.time > curTime +waitTime){
+			curTime +=waitTime;
+			if(entered){
+				target = player.position; 
+
+			}
+			else{
+				target = center.position + (Vector3)Random.insideUnitCircle * 45;
+
+			}
 			seeker = GetComponent<Seeker>();
 			seeker.StartPath(transform.position,target,OnPathComplete);
 			charctlr = GetComponent<CharacterController>();
-			curTime = Time.time;
+
 		}
+
 		//transform.position = new Vector3(transform.position.x,player.position.y + yOffset,transform.position.z);
 	}
 
@@ -54,7 +65,6 @@ public class AIPathFinder : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		speed = dist/150;
 		if(path == null){
 			return;
 		}
