@@ -3,9 +3,9 @@ using System.Collections;
 
 public class Map : MonoBehaviour {
 	public Texture2D mapSource;
-	public Rect position = new Rect(0, 0, 256, 256);
-	public int visionPercentage = 10;
-	public float updateInterval = 3;
+	Rect position;
+	public int visionPercentage = 15;
+	public float updateInterval = 1;
 	public Texture2D tempMapCover;
 	Texture2D map;
 	Color32[] bitmap;
@@ -26,7 +26,8 @@ public class Map : MonoBehaviour {
 	
 	void Start() {
 		setupMap ();
-		
+		//position = new Rect(Screen.width / 10, Screen.width / 8, Screen.width / 5, Screen.height / 2);
+		position = new Rect(0, 0, 256, 256);
 		Player = GameObject.FindWithTag("Player");
 		refObjBounds = renderer.bounds;
 		
@@ -44,6 +45,7 @@ public class Map : MonoBehaviour {
 			Event ev = Event.current;
 			//GUI.DrawTexture (position, map);
 			GUI.DrawTexture(new Rect(0, 0, Screen.width / 3, Screen.height), tempMapCover);
+			GUI.DrawTexture (position, map);
 			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
 			GUI.DrawTexture(buttonArea, backButton);
 			if(buttonArea.Contains(ev.mousePosition))
@@ -65,7 +67,7 @@ public class Map : MonoBehaviour {
 		}
 //=======
 		//		if (showMap) {
-		GUI.DrawTexture (position, map);
+		//GUI.DrawTexture (position, map);
 		//		}
 //>>>>>>> origin/master
 	}
