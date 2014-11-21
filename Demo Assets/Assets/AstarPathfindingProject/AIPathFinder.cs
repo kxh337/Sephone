@@ -16,7 +16,6 @@ public class AIPathFinder : MonoBehaviour {
 	public float repathDist;
 	public float yOffset;
 	private float dist;
-	private Vector3 yPLayerPosition;
 	public bool entered;
 	public Transform center;
 
@@ -33,11 +32,12 @@ public class AIPathFinder : MonoBehaviour {
 		if(Time.time > curTime +waitTime){
 			curTime +=waitTime;
 			if(entered){
+
 				target = player.position; 
 
 			}
 			else{
-				target = center.position + (Vector3)Random.insideUnitCircle * 45;
+				target = center.position + (Vector3)Random.insideUnitCircle * 15;
 
 			}
 			seeker = GetComponent<Seeker>();
