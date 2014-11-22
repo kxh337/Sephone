@@ -4,7 +4,6 @@ using System.Collections;
 public class SoundTrigger : MonoBehaviour {
 	public AudioSource source;
 	public AudioClip sound;
-	public float triggerdist;
 	public Transform player;
 	private bool played;
 
@@ -16,12 +15,12 @@ public class SoundTrigger : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Vector3.Distance(transform.position, player.position) < triggerdist && !played){
+	}
+	void OnTriggerEnter(Collider other){
+		if(other.gameObject.tag == "Player" && !played){
 			audio.Play();
 			played = true;
 		}
-		/*else if(Vector3.Distance(transform.position, player.position) > triggerdist){
-			played = false;
-		}*/
 	}
+
 }
