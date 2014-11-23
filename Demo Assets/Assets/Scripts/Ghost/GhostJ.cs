@@ -47,7 +47,7 @@ public class GhostJ : GenericGhost {
 			nextPoint = point4;
 		}
 		else if(Vector3.Distance(transform.position, point4.position) < pointDist){
-			renderer.enabled = false; 
+			gameObject.SetActive(false); 
 		}
 	}
 }

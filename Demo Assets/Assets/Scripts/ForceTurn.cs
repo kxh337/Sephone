@@ -2,7 +2,6 @@
 using System.Collections;
 
 public class ForceTurn : MonoBehaviour {
-	public RoomTrigger room;
 	public AudioClip audio;
 	public AudioSource audioSource;
 	private float turnTime;
@@ -37,7 +36,7 @@ public class ForceTurn : MonoBehaviour {
 		if(Time.time > turnTime && Time.time < triggerTime){
 			turned = true;
 			Debug.Log("moving");
-			charControl.Move(gameObject.transform.forward*Time.deltaTime);
+			charControl.SimpleMove(gameObject.transform.forward*Time.deltaTime);
 			mouse.enabled = false;
 			motor.enabled = false;
 		}
@@ -50,16 +49,18 @@ public class ForceTurn : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if(other.gameObject.tag == "Player" && !room.roomExited){
+		if(other.gameObject.tag == "Player"){
 			triggered = true;
 			turnPlayer(other.gameObject);
 			turnTime = Time.time + wait;
 			triggerTime = Time.time + wait*2f;
+			mouse.enabled = false;
+			motor.enabled = false;
 		}
 	}
 
 	void OnTriggerExit(Collider other){
-		if(other.gameObject.tag == "Player" && !room.roomExited){
+		if(other.gameObject.tag == "Player"){
 			triggered = false;
 
 		}

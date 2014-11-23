@@ -7,6 +7,7 @@ public class GenericGhost : MonoBehaviour {
 	public float warningZone;
 	public float warningZone1;
 	public float killZone;
+	public RedDead death;
 	private float playerDist;
 	// Use this for initialization
 	void Start () {
@@ -18,15 +19,18 @@ public class GenericGhost : MonoBehaviour {
 		checkDeathDist();
 	}
 
-	void checkDeathDist(){
+	public void checkDeathDist(){
 		if(playerDist < killZone){
 			//kill player and respawn at last checkpoint
+			death.danger3();
 		}
 		else if(playerDist < warningZone1){
 			//more warning on screen with hard hearbeating
+			death.danger2();
 		}
 		else if(playerDist < warningZone){
 			//light warning and lighter heartbeating
+			death.danger1();
 		}
 	}
 }
