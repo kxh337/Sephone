@@ -6,7 +6,6 @@ public class Map : MonoBehaviour {
 	Rect position;
 	public int visionPercentage = 15;
 	public float updateInterval = 1;
-	public Texture2D tempMapCover;
 	public Texture2D map;
 	Color32[] bitmap;
 	byte[,] alpha;
