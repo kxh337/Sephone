@@ -11,6 +11,7 @@ public class GhostJ : GenericGhost {
 	public float speed;
 	public float pointDist;
 	private Transform nextPoint;
+	public Renderer render;
 
 	// Use this for initialization
 	void Start () {
@@ -24,6 +25,7 @@ public class GhostJ : GenericGhost {
 		}
 		if(roomExited){
 			transform.position = point4.position;
+			renderer.enabled = true;
 		}
 	}
 
@@ -45,7 +47,7 @@ public class GhostJ : GenericGhost {
 			nextPoint = point4;
 		}
 		else if(Vector3.Distance(transform.position, point4.position) < pointDist){
-			//hide ghost 
+			renderer.enabled = false; 
 		}
 	}
 }
