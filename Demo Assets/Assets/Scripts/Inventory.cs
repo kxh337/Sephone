@@ -22,6 +22,8 @@ public class Inventory : MonoBehaviour {
 	public Vector2 scrollPosition = Vector2.zero;
 	public Texture2D backButton;
 	public Texture2D backButtonGlow;
+	public Texture2D mapTabBackground;
+	public Texture2D mapTexture;
 	protected int tabSelected = -1;  //-1 is for when the inventory is closed 
 									//0 is for the inventory tab, 1 is for the map tab, 2 is for the log tab
 
@@ -40,7 +42,8 @@ public class Inventory : MonoBehaviour {
 	
 	void Update() 
 	{
-
+		if(Time.timeScale == 1)
+			Screen.lockCursor = true;
 		int canPause = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
 		if (Input.GetButtonDown("Notebook") && (canPause == 0 || canPause == 2))
 		{
@@ -90,9 +93,10 @@ public class Inventory : MonoBehaviour {
 			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
 												//Don't forget to change this!! The vertical position of the note texture
 												//is hard coded right now, must change before final!!!!
+			GUI.color = new Color(1.0f, 1.0f, 1.0f, 0.25f);
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
 			                         noteWidth, noteHeight), currentNote);
-
+			GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			GUI.EndScrollView();
 			GUI.skin = skin;
 			GUI.Label(new Rect((Screen.width - Screen.width / 3) / 2, Screen.height * 0.95f, Screen.width / 3, Screen.height / 10),
@@ -154,13 +158,18 @@ public class Inventory : MonoBehaviour {
 				//For each slot that has an item in it, draw it
 				if(slots[i].itemName != null) 
 				{
-					GUI.DrawTexture(slotRect, slots[i].itemIcon);
+					if(slotRect.Contains(e.mousePosition) && !showNote)
+					{
+						GUI.DrawTexture(slotRect, slots[i].glowIcon);
+					}
+					else
+						GUI.DrawTexture(slotRect, slots[i].itemIcon);
 					//Checks if the user places the mouse above a item slot that is currently being drawn
 					if(slotRect.Contains(e.mousePosition) && !showNote)
 					{
 						//Create and show the tooltip
-						CreateTooltip(slots[i]);
-						showTooltip = true;
+						//CreateTooltip(slots[i]);
+						//showTooltip = true;
 						//If the user is dragging the mouse over this slot, then we draw the item icon beneath the cursor
 						if(e.button == 0 && e.type == EventType.mouseDrag && !dragItem)
 						{
@@ -230,7 +239,7 @@ public class Inventory : MonoBehaviour {
 		{
 			showInventory = false;
 			audio.Play();
-			GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+			//GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
 			tabSelected = 1;
 		}
 		else if(e.type == EventType.mouseUp && !dragItem && logTab.Contains(e.mousePosition) && tabSelected != -1 && !showNote)
