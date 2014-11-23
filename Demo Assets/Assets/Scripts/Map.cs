@@ -7,22 +7,15 @@ public class Map : MonoBehaviour {
 	public int visionPercentage = 15;
 	public float updateInterval = 1;
 	public Texture2D tempMapCover;
-	Texture2D map;
+	public Texture2D map;
 	Color32[] bitmap;
 	byte[,] alpha;
 	float refWidth;
 	float refHeight;
 	int visionPixels;
-//<<<<<<< HEAD
-	public Texture2D backButton;
-	public Texture2D backButtonGlow;
-
-//=======
 	
 	GameObject Player;
 	Bounds refObjBounds;
-//>>>>>>> origin/master
-	bool showMap = false;
 	
 	void Start() {
 		setupMap ();
@@ -38,39 +31,7 @@ public class Map : MonoBehaviour {
 		makeCircle ();
 		InvokeRepeating("UpdateMap", 0, updateInterval);
 	}
-	
-	void OnGUI() {
-//<<<<<<< HEAD
-		if(showMap) {
-			Event ev = Event.current;
-			//GUI.DrawTexture (position, map);
-			GUI.DrawTexture(new Rect(0, 0, Screen.width / 3, Screen.height), tempMapCover);
-			GUI.DrawTexture (position, map);
-			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
-			GUI.DrawTexture(buttonArea, backButton);
-			if(buttonArea.Contains(ev.mousePosition))
-			{
-				GUI.DrawTexture(buttonArea, backButtonGlow);
-			}
-			if(buttonArea.Contains(ev.mousePosition) && ev.isMouse && ev.type == EventType.mouseUp)
-			{
-				showMap= false;
-				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
-				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
-			}
-			/*if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
-			{
-				showMap= false;
-				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
-				GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
-			}*/
-		}
-//=======
-		//		if (showMap) {
-		//GUI.DrawTexture (position, map);
-		//		}
-//>>>>>>> origin/master
-	}
+
 	
 	void setupMap() {
 		if (mapSource == null) {
@@ -103,13 +64,6 @@ public class Map : MonoBehaviour {
 		}
 	}
 	
-	//	void Update()
-	//	{
-	//		if(Input.GetButtonDown("map")) {
-	//			showMap = !showMap;
-	//		}
-	//	}
-	
 	void paintCircle(int cx, int cy)
 	{
 		int r = visionPixels / 2;
@@ -121,12 +75,5 @@ public class Map : MonoBehaviour {
 		}
 		map.SetPixels32 (bitmap);
 		map.Apply ();
-	}
-	
-	public void turnMapOn() {
-		showMap = true;
-	}
-	public void turnMapOff() {
-		showMap = false;
 	}
 }

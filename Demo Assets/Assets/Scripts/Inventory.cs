@@ -24,6 +24,7 @@ public class Inventory : MonoBehaviour {
 	public Texture2D backButtonGlow;
 	public Texture2D mapTabBackground;
 	public Texture2D mapTexture;
+	public bool showMap;
 	protected int tabSelected = -1;  //-1 is for when the inventory is closed 
 									//0 is for the inventory tab, 1 is for the map tab, 2 is for the log tab
 
@@ -31,6 +32,7 @@ public class Inventory : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		mapTexture = GameObject.Find("MapPlane").GetComponent<Map>().map;
 		Screen.lockCursor = true;
 		for(int i = 0; i < slotX * slotY; i++) 
 		{
@@ -58,7 +60,7 @@ public class Inventory : MonoBehaviour {
 			else if(tabSelected == 1)
 			{
 				tabSelected = -1;
-				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
+				//GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
 			}
 			else
 				tabSelected = -1;
@@ -113,7 +115,24 @@ public class Inventory : MonoBehaviour {
 			{
 				tabSelected = 2;
 				audio.Play();
-				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
+				//GameObject.Find("MapPlane").GetComponent<Map>().turnMapOff();
+			}
+			GUI.DrawTexture(new Rect(0, 0, Screen.width / 3, Screen.height), mapTabBackground);
+			GUI.DrawTexture (new Rect(0, 0, Screen.width / 3, Screen.height), mapTexture);
+			Debug.Log ("Trying to draw map texture");
+			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
+			GUI.DrawTexture(buttonArea, backButton);
+			if(buttonArea.Contains(ev.mousePosition))
+			{
+				GUI.DrawTexture(buttonArea, backButtonGlow);
+			}
+			if(buttonArea.Contains(ev.mousePosition) && ev.isMouse && ev.type == EventType.mouseUp)
+			{
+				showMap = false;
+				playNotebookFlipSound();
+				backToInvTab();
+				//GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
+				//GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
 			}
 
 		}
@@ -130,7 +149,7 @@ public class Inventory : MonoBehaviour {
 			{
 				audio.Play ();
 				tabSelected = 1;
-				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+				//GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
 			}
 			/*if(GUI.Button(new Rect(0, 0, Screen.width / 10, Screen.height / 12), "Back"))
 			{
@@ -139,6 +158,24 @@ public class Inventory : MonoBehaviour {
 				GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
 			}*/
 		}
+		/*if(showMap)
+		{
+			GUI.DrawTexture(new Rect(0, 0, Screen.width / 3, Screen.height), mapTabBackground);
+			GUI.DrawTexture (new Rect(0, 0, Screen.width / 3, Screen.height), mapTexture);
+			Debug.Log ("Trying to draw map texture");
+			Rect buttonArea = new Rect(Screen.width / 23, Screen.height / 19, backButton.width, backButton.height);
+			GUI.DrawTexture(buttonArea, backButton);
+			if(buttonArea.Contains(ev.mousePosition))
+			{
+				GUI.DrawTexture(buttonArea, backButtonGlow);
+			}
+			if(buttonArea.Contains(ev.mousePosition) && ev.isMouse && ev.type == EventType.mouseUp)
+			{
+				showMap= false;
+				GameObject.Find("Inventory").GetComponent<Inventory>().playNotebookFlipSound();
+				//GameObject.Find("Inventory").GetComponent<Inventory>().backToInvTab();
+			}
+		}*/
 
 	}
 
@@ -240,6 +277,8 @@ public class Inventory : MonoBehaviour {
 			showInventory = false;
 			audio.Play();
 			//GameObject.Find("MapPlane").GetComponent<Map>().turnMapOn();
+			showMap = true;
+			//mapTexture = GameObject.Find("MapPlane").GetComponent<Map>().map;
 			tabSelected = 1;
 		}
 		else if(e.type == EventType.mouseUp && !dragItem && logTab.Contains(e.mousePosition) && tabSelected != -1 && !showNote)
