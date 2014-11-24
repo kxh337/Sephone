@@ -41,7 +41,7 @@ public class ForceTurn : MonoBehaviour {
 			motor.enabled = false;
 		}
 		if(Time.time > triggerTime){
-			mouse.enabled = true;
+			//mouse.enabled = true;
 			motor.enabled = true;
 			turned = false;
 		}
