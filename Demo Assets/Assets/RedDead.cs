@@ -16,14 +16,14 @@ public class RedDead : MonoBehaviour {
 	}
 
 	public void danger1(){
-		Debug.Log("Danger Level: 1");
+		//Debug.Log("Danger Level: 1");
 	}
 
 	public void danger2(){
-		Debug.Log("Danger Level: 2");
+		//Debug.Log("Danger Level: 2");
 	}
 
 	public void danger3(){
-		Debug.Log("Danger Level: 3");
+		//Debug.Log("Danger Level: 3");
 	}
 }

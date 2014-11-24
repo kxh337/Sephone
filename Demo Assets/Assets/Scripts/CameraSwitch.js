@@ -7,7 +7,7 @@ var animationDuration : float;
 //private var boxPhysics : BoxPhysics;
 
 function Start() {
-	GameObject.Find("Player").GetComponent(FPSInputController).enabled = false;
+	/*GameObject.Find("Player").GetComponent(FPSInputController).enabled = false;
 	GameObject.Find("Flashlight").GetComponent(Light).enabled = false;
 	GameObject.Find("Graphics").GetComponent(MeshRenderer).enabled = false;
 	camera1.camera.enabled = false;
@@ -26,6 +26,21 @@ function Start() {
 	moveBoxes();*/
 }	
 
+function turnCutSceneOn()
+{
+	//GameObject.Find("Player").GetComponent(FPSInputController).enabled = false;
+	GameObject.Find("Flashlight").GetComponent(Light).enabled = false;
+	GameObject.Find("Graphics").GetComponent(MeshRenderer).enabled = false;
+	camera1.camera.enabled = false;
+	camera2.camera.enabled = true;
+	camera2.animation.Play();
+	
+	yield WaitForSeconds(animationDuration);
+	if(camera2.animation.isPlaying == false)
+	{
+		mainCameraSwitch();
+	}
+}
 
 
 /*function moveBoxes() {
