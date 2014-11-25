@@ -94,7 +94,7 @@ public class RedDead : MonoBehaviour {
 				Debug.Log("Danger 3");
 			}
 			else{
-				Debug.Log("Safe");
+				//Debug.Log("Safe");
 
 			}
 		}
