@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: c5e477b8eb77a7647b631be4bbead933
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: Options Button
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
