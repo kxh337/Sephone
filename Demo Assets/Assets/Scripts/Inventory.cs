@@ -95,6 +95,9 @@ public class Inventory : MonoBehaviour {
 			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
 												//Don't forget to change this!! The vertical position of the note texture
 												//is hard coded right now, must change before final!!!!
+
+
+			//GUI COLOR HERE!!
 			GUI.color = new Color(1.0f, 1.0f, 1.0f, 0.25f);
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
 			                         noteWidth, noteHeight), currentNote);
