@@ -2,15 +2,12 @@
 using System.Collections;
 
 public class CisternTrigger : MonoBehaviour {
-	/*public AudioSource source;
+	public AudioSource source;
 	public AudioClip sound;
-	public Animation anim;
-	public Transform player;
 	private bool played;
 	
 	// Use this for initialization
-	/*void Start () {
-		source.clip = sound;
+	void Start () {
 		played = false;
 
 	}
@@ -19,10 +16,11 @@ public class CisternTrigger : MonoBehaviour {
 	void Update () {
 
 	}
-	/*void OnTriggerEnter(Collider other){
+	void OnTriggerEnter(Collider other){
 		if(other.gameObject.tag == "Player" && !played){
 			audio.Play();
+			GameObject.FindGameObjectWithTag("CisternCamera").GetComponent("CameraSwitch").SendMessage("turnCutSceneOn");
 			played = true;
 		}
-	}*/
+	}
 }
