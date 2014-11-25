@@ -26,10 +26,10 @@ public class Pause : MonoBehaviour {
 		Screen.lockCursor = true;
 		space = groupHeight / 5;
 		rects = new Rect[5];
-		Debug.Log (buttonSize * loadText.height);
-		Debug.Log (loadText.height);
-		Debug.Log (buttonSize * quitText.height);
-		Debug.Log (quitText.height);
+		//Debug.Log (buttonSize * loadText.height);
+		//Debug.Log (loadText.height);
+		//Debug.Log (buttonSize * quitText.height);
+		//Debug.Log (quitText.height);
 		rects[0] = new Rect((groupWidth - loadText.width) / 2, 0 * space, buttonSize * loadText.width, buttonSize * loadText.height);
 		rects[1] = new Rect((groupWidth - resumeText.width) / 2, 1 * space, buttonSize * resumeText.width, buttonSize * resumeText.height);
 		rects[2] = new Rect((groupWidth - saveText.width) / 2, 2 * space, buttonSize * saveText.width, buttonSize * saveText.height);

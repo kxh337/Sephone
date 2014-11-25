@@ -13,6 +13,7 @@ public class PickUp : MonoBehaviour {
 	public int textHeight = 50;
 	private bool showText = false;
 	public GUISkin guiSkin;
+	public GameObject ghostG;
 
 	void pickUpItem() 
 	{
@@ -24,6 +25,10 @@ public class PickUp : MonoBehaviour {
 				inv = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>();
 				CheckItem check = new CheckItem();
 				hit.transform.SendMessage("setItemID", check, SendMessageOptions.DontRequireReceiver);
+				if(check.itemID == 6)
+				{
+					ghostG.SetActive(true);
+				}
 				inv.SendMessage("AddItem", check.itemID, SendMessageOptions.RequireReceiver);
 				hit.transform.SendMessage("itemCollected", SendMessageOptions.DontRequireReceiver);
 			}
