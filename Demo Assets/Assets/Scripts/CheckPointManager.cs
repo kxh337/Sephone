@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class CheckPointManager : MonoBehaviour {
-	CheckPoint[] points;
-	private CheckPoint currentCheckPoint;
 	// Use this for initialization
 	void Start () {
 	
@@ -15,8 +13,6 @@ public class CheckPointManager : MonoBehaviour {
 	}
 
 	void updateCheckPoint(){
-		for(CheckPoint point in points){
 
-		}
 	}
 }
