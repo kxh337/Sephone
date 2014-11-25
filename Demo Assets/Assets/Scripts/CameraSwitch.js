@@ -6,6 +6,7 @@ var animationDuration : float;
 var blackTexture : Texture2D;
 var cutScenePlaying : boolean;
 var alphaValue : float;
+var animationNumber : int;
 //private var boxPhysics : BoxPhysics;
 
 function Start() {
@@ -26,6 +27,12 @@ function Start() {
 	
 	yield WaitForSeconds(2);
 	moveBoxes();*/
+	
+	//If the animation is the first animation in the game, play it
+	if(animationNumber == 0)
+	{
+		turnCutSceneOn();
+	}
 	alphaValue = 0.0f;
 }	
 
