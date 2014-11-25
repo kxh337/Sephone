@@ -3,11 +3,23 @@ using System.Collections;
 
 public class Map : MonoBehaviour {
 	public Texture2D mapSource;
-	Rect position;
 	public int visionPercentage = 15;
 	public float updateInterval = 1;
+	public float markerWidth = 5;		//ALL SIZES ARE PERCENTWISE
+	public float 	mapPosLeft = 8,
+					mapPosTop = 30,
+					mapWidth = 17;
+	
+	[HideInInspector]
 	public Texture2D map;
+	public Texture2D marker;
+	[HideInInspector]
+	public Rect mapTexPos;
+	[HideInInspector]
+	public Rect markerTexPos;
+
 	Color32[] bitmap;
+	int[] alphaOriginal;
 	byte[,] alpha;
 	float refWidth;
 	float refHeight;
@@ -18,8 +30,10 @@ public class Map : MonoBehaviour {
 	
 	void Start() {
 		setupMap ();
-		//position = new Rect(Screen.width / 10, Screen.width / 8, Screen.width / 5, Screen.height / 2);
-		position = new Rect(0, 0, 256, 256);
+
+		mapTexPos = new Rect (mapPosLeft * Screen.width / 100, mapPosTop * Screen.height / 100, mapWidth * Screen.width/100, map.height * mapWidth * Screen.width / 100 / map.width);
+		markerTexPos = new Rect (0, 0, mapTexPos.width / 100 * markerWidth, marker.width * mapTexPos.width / 100 * markerWidth / marker.height);
+
 		Player = GameObject.FindWithTag("Player");
 		refObjBounds = renderer.bounds;
 		
@@ -33,12 +47,12 @@ public class Map : MonoBehaviour {
 
 	
 	void setupMap() {
-		if (mapSource == null) {
-			mapSource = new Texture2D ((int)position.width, (int)position.height);
-		}
 		bitmap = mapSource.GetPixels32();
-		for (int i = 0; i < bitmap.Length; i++)
-			bitmap[i].a = 0;
+		alphaOriginal = new int[bitmap.Length];
+		for (int i = 0; i < bitmap.Length; i++) {
+			alphaOriginal[i] = bitmap[i].a;
+			bitmap [i].a = 0;
+		}
 		
 		map = new Texture2D(mapSource.width, mapSource.height);
 		map.SetPixels32(bitmap);
@@ -47,8 +61,11 @@ public class Map : MonoBehaviour {
 	
 	void UpdateMap () {
 		int x = Mathf.RoundToInt((Player.transform.position.x - refObjBounds.min.x) * map.width / refWidth);
-		int y = Mathf.RoundToInt((Player.transform.position.z - refObjBounds.min.z) * map.height /refHeight);
+		int y = Mathf.RoundToInt((Player.transform.position.z - refObjBounds.min.z) * map.height / refHeight);
 		paintCircle (x, y);
+
+		markerTexPos.x = mapTexPos.x + x * mapTexPos.width / map.width;
+		markerTexPos.y = mapTexPos.y + mapTexPos.height - y * mapTexPos.height / map.height;
 	}
 	
 	void makeCircle() {
@@ -69,8 +86,9 @@ public class Map : MonoBehaviour {
 		for(int x= cx - r; x < cx+r; x++)
 		for(int y= cy - r; y < cy+r; y++) {
 			byte a = alpha[x - (cx - r), y - (cy - r)];
-			if(a > bitmap[y*map.width + x].a)
-				bitmap[y*map.width + x].a = a;
+			int pos = y*map.width + x;
+			if(pos < bitmap.Length && a > bitmap[pos].a)
+				bitmap[pos].a = (byte) Mathf.Min(a, alphaOriginal[pos]);
 		}
 		map.SetPixels32 (bitmap);
 		map.Apply ();
