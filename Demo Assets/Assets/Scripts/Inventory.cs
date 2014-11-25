@@ -331,7 +331,7 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 	}
-	bool InventoryContain(int id)
+	public bool InventoryContain(int id)
 	{
 		bool result = false;
 		for(int i = 0; i < inventory.Count; i++)

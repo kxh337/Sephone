@@ -4,7 +4,6 @@ using System.Collections;
 public class YoYoTrigger : MonoBehaviour {
 	public AudioSource source;
 	public AudioClip sound;
-	private bool played;
 	private bool containsYoYo;
 	// Use this for initialization
 	void Start () {
@@ -17,10 +16,10 @@ public class YoYoTrigger : MonoBehaviour {
 	}
 
 	void OnTriggerEnter(Collider other){
-		if(other.gameObject.tag == "Player" && !played){
+		if(other.gameObject.tag == "Player"){
 			audio.Play();
-			//containsYoYo = GameObject.FindGameObjectWithTag("Inventory").SendMessage("InventoryContain", 6);
-			played = true;
+			containsYoYo = GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>().InventoryContain(6);
+
 		}
 	}
 }
