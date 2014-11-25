@@ -7,6 +7,7 @@ var blackTexture : Texture2D;
 var cutScenePlaying : boolean;
 var alphaValue : float;
 var animationNumber : int;
+var sephoneGasp;
 //private var boxPhysics : BoxPhysics;
 
 function Start() {
