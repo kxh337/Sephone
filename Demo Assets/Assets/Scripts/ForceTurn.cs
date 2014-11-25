@@ -36,7 +36,7 @@ public class ForceTurn : MonoBehaviour {
 		if(Time.time > turnTime && Time.time < triggerTime){
 			turned = true;
 			Debug.Log("moving");
-			charControl.SimpleMove(gameObject.transform.forward*Time.deltaTime);
+			charControl.Move(gameObject.transform.forward*Time.deltaTime);
 			mouse.enabled = false;
 			motor.enabled = false;
 		}
