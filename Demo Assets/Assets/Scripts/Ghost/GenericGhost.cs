@@ -20,8 +20,11 @@ public class GenericGhost : MonoBehaviour {
 	}
 
 	public void checkDeathDist(){
+
 		playerDist = Vector3.Distance(player.transform.position,gameObject.transform.position);
+
 		//Debug.Log(playerDist);
+
 		if(playerDist < killZone){
 			//kill player and respawn at last checkpoint
 			death.danger3 = true;
