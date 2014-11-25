@@ -24,17 +24,11 @@ public class Pause : MonoBehaviour {
 	void Start() 
 	{
 		Screen.lockCursor = true;
-		space = groupHeight / 5;
+		space = groupHeight / 4;
 		rects = new Rect[5];
-		//Debug.Log (buttonSize * loadText.height);
-		//Debug.Log (loadText.height);
-		//Debug.Log (buttonSize * quitText.height);
-		//Debug.Log (quitText.height);
-		rects[0] = new Rect((groupWidth - loadText.width) / 2, 0 * space, buttonSize * loadText.width, buttonSize * loadText.height);
-		rects[1] = new Rect((groupWidth - resumeText.width) / 2, 1 * space, buttonSize * resumeText.width, buttonSize * resumeText.height);
-		rects[2] = new Rect((groupWidth - saveText.width) / 2, 2 * space, buttonSize * saveText.width, buttonSize * saveText.height);
-		rects[3] = new Rect((groupWidth - optionsText.width) / 2, 3 * space, buttonSize * optionsText.width, buttonSize * optionsText.height);
-		rects[4] = new Rect((groupWidth - quitText.width) / 2, 4 * space, buttonSize * quitText.width, buttonSize * optionsText.height);
+		rects[0] = new Rect((groupWidth - resumeText.width) / 2, 1 * space, buttonSize * resumeText.width, buttonSize * resumeText.height);
+		rects[1] = new Rect((groupWidth - optionsText.width) / 2, 2 * space, buttonSize * optionsText.width, buttonSize * optionsText.height);
+		rects[2] = new Rect((groupWidth - quitText.width) / 2, 3 * space, buttonSize * quitText.width, buttonSize * optionsText.height);
 		
 	}
 
@@ -59,18 +53,7 @@ public class Pause : MonoBehaviour {
 
 			if(ev != null && rects[0].Contains(ev.mousePosition))
 			{
-				GUI.DrawTexture(rects[0], loadGlow);
-				if(ev.isMouse && ev.type == EventType.mouseUp)
-				{
-					//Do Load stuff here
-				}
-			}
-			else 
-				GUI.DrawTexture(rects[0], loadText);
-
-			if(ev != null && rects[1].Contains(ev.mousePosition))
-			{
-				GUI.DrawTexture(rects[1], resumeGlow);
+				GUI.DrawTexture(rects[0], resumeGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
 					gamePaused = false;
@@ -78,40 +61,29 @@ public class Pause : MonoBehaviour {
 				}
 			}
 			else
-				GUI.DrawTexture(rects[1], resumeText);
+				GUI.DrawTexture(rects[0], resumeText);
 
-			if(ev != null && rects[2].Contains(ev.mousePosition))
+			if(ev != null && rects[1].Contains(ev.mousePosition))
 			{
-				GUI.DrawTexture(rects[2], saveGlow);
-				if(ev.isMouse && ev.type == EventType.mouseUp)
-				{
-					//Do save stuff here
-				}
-			}
-			else
-				GUI.DrawTexture(rects[2], saveText);
-
-			if(ev != null && rects[3].Contains(ev.mousePosition))
-			{
-				GUI.DrawTexture(rects[3], optionsGlow);
+				GUI.DrawTexture(rects[1], optionsGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
 					//Do options stuff here
 				}
 			}
 			else
-				GUI.DrawTexture(rects[3], optionsText);
+				GUI.DrawTexture(rects[1], optionsText);
 
-			if(ev != null && rects[4].Contains(ev.mousePosition))
+			if(ev != null && rects[2].Contains(ev.mousePosition))
 			{
-				GUI.DrawTexture(rects[4], quitGlow);
+				GUI.DrawTexture(rects[2], quitGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
 					//Do save stuff here
 				}
 			}
 			else
-				GUI.DrawTexture(rects[4], quitText);
+				GUI.DrawTexture(rects[2], quitText);
 			GUI.EndGroup();
 		}
 	}
