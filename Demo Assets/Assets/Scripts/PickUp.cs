@@ -6,7 +6,7 @@ public class PickUp : MonoBehaviour {
 
 	
 
-	private float distance = 3.0F;
+	private float distance = 6.0F;
 	private Inventory inv;
 	public CheckItem check;
 	public int textWidth = 250;
