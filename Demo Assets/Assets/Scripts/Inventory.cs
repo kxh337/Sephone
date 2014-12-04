@@ -102,7 +102,7 @@ public class Inventory : MonoBehaviour {
 
 
 			//GUI COLOR HERE!!
-			GUI.color = new Color(1.0f, 1.0f, 1.0f, 0.25f);
+			GUI.color = new Color(1.0f, 1.0f, 1.0f, 0.80f);
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
 			                         noteWidth, noteHeight), currentNote);
 			GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);

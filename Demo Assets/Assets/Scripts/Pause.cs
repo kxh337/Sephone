@@ -79,7 +79,7 @@ public class Pause : MonoBehaviour {
 				GUI.DrawTexture(rects[2], quitGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
-					//Do save stuff here
+					Application.Quit();
 				}
 			}
 			else
