@@ -1,6 +1,5 @@
 private var motor : CharacterMotor;
 
-
 // Use this for initialization
 function Awake () {
 	motor = GetComponent(CharacterMotor);
@@ -16,8 +15,6 @@ function Update () {
 		// Dividing by the length is cheaper than normalizing when we already have the length anyway
 		var directionLength = directionVector.magnitude;
 		directionVector = directionVector / directionLength;
-		
-		
 		
 		// Make sure the length is no bigger than 1
 		directionLength = Mathf.Min(1, directionLength);
