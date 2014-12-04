@@ -87,7 +87,8 @@ public class Map : MonoBehaviour {
 		for(int y= cy - r; y < cy+r; y++) {
 			byte a = alpha[x - (cx - r), y - (cy - r)];
 			int pos = y*map.width + x;
-			if(pos < bitmap.Length && a > bitmap[pos].a)
+			if(pos < bitmap.Length)
+			if(a > bitmap[pos].a)
 				bitmap[pos].a = (byte) Mathf.Min(a, alphaOriginal[pos]);
 		}
 		map.SetPixels32 (bitmap);
