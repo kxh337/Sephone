@@ -170,7 +170,7 @@ public class RedDead : MonoBehaviour {
 				alpha2 = 0f;
 				alpha3 = 0f;
 			}
-			if(Time.time >= gameOverTime){
+			if(Time.time >= gameOverTime && gameOver){
 				blinkTexture(black,1f,0f,blackAlpha, fadeSpeed);
 				gameOver = false;
 			}
