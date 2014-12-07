@@ -9,6 +9,9 @@ public class GenericGhost : MonoBehaviour {
 	public float killZone;
 	public RedDead death;
 	private float playerDist;
+	Vector3 lastPosition = Vector3.zero;
+	public float rotateSpeed = 250;
+
 	// Use this for initialization
 	void Start () {
 
@@ -16,11 +19,26 @@ public class GenericGhost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		checkDeathDist();
+		baseUpdate();
 	}
 
-	public void checkDeathDist(){
+	protected void baseUpdate() {	
+		checkDeathDist();
+		faceForward ();
+	}
 
+	void faceForward() {
+//		transform.LookAt (transform.position + (transform.position - lastPosition));
+		Vector3 speed = transform.position - lastPosition;
+		if (speed != Vector3.zero)
+		{
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(new Vector3(speed.x,0,speed.z)), Time.deltaTime * rotateSpeed);
+		}
+
+		lastPosition = transform.position;
+	}
+
+	void checkDeathDist(){
 		playerDist = Vector3.Distance(player.transform.position,gameObject.transform.position);
 
 		//Debug.Log(playerDist);

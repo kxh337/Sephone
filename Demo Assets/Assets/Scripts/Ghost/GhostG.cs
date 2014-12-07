@@ -10,7 +10,7 @@ public class GhostG : GenericGhost {
 	
 	// Update is called once per frame
 	void Update () {
-		checkDeathDist();
+		baseUpdate ();
 		finder.entered = triggered;
 	}
 }

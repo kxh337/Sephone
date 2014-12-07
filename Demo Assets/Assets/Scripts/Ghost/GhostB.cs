@@ -14,7 +14,7 @@ public class GhostB : GenericGhost {
 	
 	// Update is called once per frame
 	void Update () {
-		checkDeathDist();
+		baseUpdate();
 		if(!triggered){
 			endWalk = walkTime + walkTime;
 		}
