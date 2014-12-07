@@ -28,7 +28,6 @@ public class GenericGhost : MonoBehaviour {
 	}
 
 	void faceForward() {
-//		transform.LookAt (transform.position + (transform.position - lastPosition));
 		Vector3 speed = transform.position - lastPosition;
 		if (speed != Vector3.zero)
 		{

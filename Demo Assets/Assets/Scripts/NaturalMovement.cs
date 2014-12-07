@@ -2,25 +2,26 @@
 using System.Collections;
 
 public class NaturalMovement : MonoBehaviour {
-	public GameObject reference;
-	public GameObject player;
-	public float verticalPercentage = 30;
-	public float horizontalPercentage = 30;
+	public float verticalPercentage = 35;
+	public float horizontalPercentage = 20;
+	private float previousAngleY = 0;
+	private Transform parent;
 
 	// Use this for initialization
 	void Start () {
+		parent = transform.parent;
 	}
 	
-//	// Update is called once per frame
-//	void Update () {
-//		float newx = reference.transform.rotation.x * verticalPercentage / 100;
-//		float newz = player.rigidbody.angularVelocity.y * horizontalPercentage / 100;
-////		Debug.Log(newx);
-//		Debug.Log(reference.transform.rotation.x + " " + newx);
-//		transform.localRotation = new Quaternion (	newx,
-//		                                		    transform.rotation.y,
-//				                                    newz,
-//				                                    transform.rotation.w);
-//		                                    
-//	}
+	// Update is called once per frame
+	void Update () {
+		float speedAngleY = parent.eulerAngles.y - previousAngleY;
+		float newy = Mathf.LerpAngle(transform.localEulerAngles.y, speedAngleY, Time.deltaTime * horizontalPercentage);
+		float adjustedAngleX = ((parent.eulerAngles.x + 90) % 360) - 90;
+		float newx = adjustedAngleX * verticalPercentage / 100;
+		transform.localEulerAngles = new Vector3 (newx, newy, transform.localEulerAngles.z);
+		
+		Debug.Log(speedAngleY);
+
+		previousAngleY = parent.eulerAngles.y;
+	}
 }
