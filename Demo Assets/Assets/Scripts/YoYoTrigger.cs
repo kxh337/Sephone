@@ -28,6 +28,7 @@ public class YoYoTrigger : MonoBehaviour {
 				
 				GameObject.Find("GhostG").SetActive(false);
 				GameObject.Find("pickupYoyo").GetComponent<MeshRenderer>().enabled = true;
+				GameObject.FindGameObjectWithTag("Inventory").GetComponent<Inventory>().RemoveItem(6);
 				played = true;
 				showPrompt = false;
 			}

@@ -280,7 +280,7 @@ public class Inventory : MonoBehaviour {
 		return tooltip;
 	}
 
-	void RemoveItem(int id) 
+	public void RemoveItem(int id) 
 	{
 		for(int i = 0; i < inventory.Count; i++) 
 		{

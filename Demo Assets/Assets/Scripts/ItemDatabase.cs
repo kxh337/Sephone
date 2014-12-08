@@ -14,5 +14,6 @@ public class ItemDatabase : MonoBehaviour {
 		items.Add(new Item("Locket", 4, "An iron locket", false, Item.ItemType.Quest));
 		items.Add (new Item("Teddy", 5, "A teddy bear", false, Item.ItemType.Quest));
 		items.Add (new Item("YoYo", 6, "A yoyo", false, Item.ItemType.Quest));
+		items.Add (new Item("Note2", 7, "Another note", true, Item.ItemType.Quest));
 	}
 }

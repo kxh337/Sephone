@@ -68,7 +68,8 @@ function turnCutSceneOn()
 	
 	yield WaitForSeconds(animationDuration);
 	cutScenePlaying = true;
-	yield WaitForSeconds(5.0f);
+	audio.Play();
+	yield WaitForSeconds(4.0f);
 	if(camera2.animation.isPlaying == false)
 	{
 		mainCameraSwitch();
