@@ -4,7 +4,7 @@ using System.Collections;
 public class Pause : MonoBehaviour {
 
 	private float buttonSize = (float) Screen.width / 1500;
-	private int groupWidth = Screen.width / 5;
+	private int groupWidth = Screen.width / 4;
 	private int groupHeight = Screen.height / 2;
 	private int space;
 	private bool gamePaused = false; 
@@ -26,9 +26,9 @@ public class Pause : MonoBehaviour {
 		Screen.lockCursor = true;
 		space = groupHeight / 4;
 		rects = new Rect[5];
-		rects[0] = new Rect((groupWidth - resumeText.width) / 2, 1 * space, buttonSize * resumeText.width, buttonSize * resumeText.height);
-		rects[1] = new Rect((groupWidth - optionsText.width) / 2, 2 * space, buttonSize * optionsText.width, buttonSize * optionsText.height);
-		rects[2] = new Rect((groupWidth - quitText.width) / 2, 3 * space, buttonSize * quitText.width, buttonSize * optionsText.height);
+		rects[0] = new Rect((groupWidth - buttonSize * resumeText.width) / 2, 1 * space, buttonSize * resumeText.width, buttonSize * resumeText.height);
+		rects[1] = new Rect((groupWidth - buttonSize * optionsText.width) / 2, 2 * space, buttonSize * optionsText.width, buttonSize * optionsText.height);
+		rects[2] = new Rect((groupWidth - buttonSize * quitText.width) / 2, 3 * space, buttonSize * quitText.width, buttonSize * optionsText.height);
 		
 	}
 

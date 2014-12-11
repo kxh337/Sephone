@@ -17,10 +17,9 @@ public class NaturalMovement : MonoBehaviour {
 		float speedAngleY = parent.eulerAngles.y - previousAngleY;
 		float newy = Mathf.LerpAngle(transform.localEulerAngles.y, speedAngleY, Time.deltaTime * horizontalPercentage);
 		float adjustedAngleX = ((parent.eulerAngles.x + 90) % 360) - 90;
-		float newx = adjustedAngleX * verticalPercentage / 100;
+		float newx = - Mathf.Abs(adjustedAngleX * verticalPercentage / 100);
+
 		transform.localEulerAngles = new Vector3 (newx, newy, transform.localEulerAngles.z);
-		
-		Debug.Log(speedAngleY);
 
 		previousAngleY = parent.eulerAngles.y;
 	}
