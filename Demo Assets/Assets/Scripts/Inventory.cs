@@ -94,7 +94,7 @@ public class Inventory : MonoBehaviour {
 		{
 			int noteWidth = currentNote.width;
 			int noteHeight = currentNote.height;
-			scrollPosition = GUI.BeginScrollView(new Rect((Screen.width - Screen.width / 3) / 2, 0.0f, Screen.width / 3,
+			scrollPosition = GUI.BeginScrollView(new Rect((Screen.width - Screen.width / 3) / 2, 0.0f, Screen.width / 1.5f,
 			                                              Screen.height * 0.9f), scrollPosition, 
 			                                     new Rect((Screen.width - Screen.width / 3) / 2, -150, noteWidth, noteHeight));
 												//Don't forget to change this!! The vertical position of the note texture
@@ -104,7 +104,7 @@ public class Inventory : MonoBehaviour {
 			//GUI COLOR HERE!!
 			GUI.color = new Color(1.0f, 1.0f, 1.0f, 0.80f);
 			GUI.DrawTexture(new Rect((Screen.width - noteWidth) / 2, (Screen.height - noteHeight) / 2,
-			                         noteWidth, noteHeight), currentNote);
+			                         noteWidth, noteHeight * 1.2f), currentNote);
 			GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
 			GUI.EndScrollView();
 			GUI.skin = skin;
