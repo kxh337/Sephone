@@ -16,7 +16,7 @@ public class GhostB : GenericGhost {
 	void Update () {
 		baseUpdate();
 		if(!triggered){
-			endWalk = walkTime + walkTime;
+			endWalk = Time.time + walkTime;
 		}
 		if(triggered){
 			transform.position = Vector3.Lerp(transform.position, throughWall.position, smooth * Time.deltaTime);
