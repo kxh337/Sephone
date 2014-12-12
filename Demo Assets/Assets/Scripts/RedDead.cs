@@ -15,13 +15,16 @@ public class RedDead : MonoBehaviour {
 	public float flashSpeed;
 	public float fadeSpeed;
 	public float blackAlpha;
+	public float warningZone;
+	public float warningZone1;
+	public float killZone;
 	private Rect rect;
 	private Color tempRed1;
 	private Color tempRed2;
 	private Color tempRed3;
-	private bool played1;
-	private bool played2;
-	private bool played3;
+	public bool played1;
+	public bool played2;
+	public bool played3;
 	private int totem;
 	private float alpha1;
 	private float alpha2;
@@ -34,6 +37,7 @@ public class RedDead : MonoBehaviour {
 	private bool dangertemp3;
 	private float gameOverTime;
 	public bool gameOver;
+	public GenericGhost[] ghosts;
 	// Use this for initialization
 	void Start () {
 		rect = new Rect(0,0, Screen.width, Screen.height);
@@ -54,7 +58,8 @@ public class RedDead : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		totem = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
+		checkDeathDist();
+		//totem = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
 		if(!danger1 && !danger2 && !danger3){
 			played1 = false;
 			played2 = false;
@@ -96,6 +101,38 @@ public class RedDead : MonoBehaviour {
 
 		}
 	
+	}
+
+	public void checkDeathDist(){
+		float minDist = ghosts[0].playerDist;
+		foreach (GenericGhost ghost in ghosts) {
+			if(minDist > ghost.playerDist){
+				minDist = ghost.playerDist;
+			}
+		}
+			
+			//Debug.Log(playerDist);
+			
+			if (minDist < killZone) {
+				//kill player and respawn at last checkpoint
+				danger3 = true;
+				danger2 = false;
+				danger1 = false;
+			} else if (minDist < warningZone1) {
+				//more warning on screen with hard hearbeating
+				danger3 = false;
+				danger2 = true;
+				danger1 = false;
+			} else if (minDist < warningZone) {
+				//light warning and lighter heartbeating
+				danger3 = false;
+				danger2 = false;
+				danger1 = true;
+			} else {
+				danger3 = false;
+				danger2 = false;
+				danger1 = false;
+			}
 	}
 
 	void OnGUI(){

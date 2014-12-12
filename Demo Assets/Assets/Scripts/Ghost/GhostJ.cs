@@ -20,6 +20,8 @@ public class GhostJ : GenericGhost {
 	
 	// Update is called once per frame
 	void Update () {
+		playerDist = Vector3.Distance(player.transform.position,gameObject.transform.position);
+		checkDeathDist (playerDist);
 		if(triggered){
 			move();
 		}

@@ -8,10 +8,9 @@ public class GenericGhost : MonoBehaviour {
 	public float warningZone1;
 	public float killZone;
 	public RedDead death;
-	private float playerDist;
 	Vector3 lastPosition = Vector3.zero;
 	public float rotateSpeed = 250;
-
+	public float playerDist;
 	// Use this for initialization
 	void Start () {
 
@@ -19,11 +18,11 @@ public class GenericGhost : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		baseUpdate();
+
 	}
 
-	protected void baseUpdate() {	
-		checkDeathDist();
+
+	protected void baseUpdate(float dist) {	
 		faceForward ();
 	}
 
@@ -37,33 +36,33 @@ public class GenericGhost : MonoBehaviour {
 		lastPosition = transform.position;
 	}
 
-	void checkDeathDist(){
-		playerDist = Vector3.Distance(player.transform.position,gameObject.transform.position);
+	public void checkDeathDist(float Dist){
 
-		//Debug.Log(playerDist);
+		if (playerDist > Dist) {
+			playerDist = Dist;
+		
+						//Debug.Log(playerDist);
 
-		if(playerDist < killZone){
-			//kill player and respawn at last checkpoint
-			death.danger3 = true;
-			death.danger2 = false;
-			death.danger1 = false;
-		}
-		else if(playerDist < warningZone1){
-			//more warning on screen with hard hearbeating
-			death.danger3 = false;
-			death.danger2 = true;
-			death.danger1 = false;
-		}
-		else if(playerDist < warningZone){
-			//light warning and lighter heartbeating
-			death.danger3 = false;
-			death.danger2 = false;
-			death.danger1 = true;
-		}
-		else{
-			death.danger3 = false;
-			death.danger2 = false;
-			death.danger1 = false;
-		}
+			if (playerDist < killZone) {
+								//kill player and respawn at last checkpoint
+								death.danger3 = true;
+								death.danger2 = false;
+								death.danger1 = false;
+			} else if (playerDist < warningZone1) {
+								//more warning on screen with hard hearbeating
+								death.danger3 = false;
+								death.danger2 = true;
+								death.danger1 = false;
+			} else if (playerDist < warningZone) {
+								//light warning and lighter heartbeating
+								death.danger3 = false;
+								death.danger2 = false;
+								death.danger1 = true;
+						} else {
+								death.danger3 = false;
+								death.danger2 = false;
+								death.danger1 = false;
+						}
+				}
 	}
 }
