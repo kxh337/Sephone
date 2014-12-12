@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class YoYoTrigger : MonoBehaviour {
+	public GameObject sephone;
 	public AudioSource source;
 	public AudioClip sound;
 	public bool played = false;
@@ -12,11 +13,14 @@ public class YoYoTrigger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		sephone.SetActive (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (played) {
+			sephone.SetActive(true);
+		}
 		//Event ev = Event.current;
 		if(showPrompt)
 		{
