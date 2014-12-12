@@ -20,6 +20,7 @@ public class Pause : MonoBehaviour {
 	public Texture2D resumeGlow;
 	public Texture2D saveGlow;
 	public Texture2D helpMenu;
+	private bool showHelp = false;
 	Rect[] rects;
 
 	void Start() 
@@ -45,12 +46,13 @@ public class Pause : MonoBehaviour {
 
 	void OnGUI() 
 	{
+		Event ev = Event.current;
 		if(gamePaused) 
 		{
 			GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), pauseScreen); 
 			GUI.BeginGroup(new Rect((Screen.width - groupWidth) / 2, (Screen.height - groupHeight) / 2 + Screen.height / 9,
 			                        groupWidth, groupHeight));
-			Event ev = Event.current;
+
 
 			if(ev != null && rects[0].Contains(ev.mousePosition))
 			{
@@ -69,11 +71,7 @@ public class Pause : MonoBehaviour {
 				GUI.DrawTexture(rects[1], optionsGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
-					GUI.DrawTexture (new Rect(0, 0, Screen.width, Screen.height), helpMenu);
-					if(ev.isMouse && ev.type == EventType.mouseUp)
-					{
-
-					}
+					showHelp = true;
 				}
 			}
 			else
@@ -90,6 +88,15 @@ public class Pause : MonoBehaviour {
 			else
 				GUI.DrawTexture(rects[2], quitText);
 			GUI.EndGroup();
+		}
+		if(showHelp)
+		{
+			Event e = Event.current;
+			GUI.DrawTexture (new Rect(0, 0, Screen.width, Screen.height), helpMenu);
+			if(e.isMouse && e.type == EventType.mouseDown)
+			{
+				showHelp = false;
+			}
 		}
 	}
 
