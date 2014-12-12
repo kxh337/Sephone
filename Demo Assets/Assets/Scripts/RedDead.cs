@@ -35,9 +35,10 @@ public class RedDead : MonoBehaviour {
 	private bool dangertemp1;
 	private bool dangertemp2;
 	private bool dangertemp3;
-	private float gameOverTime;
+	public float gameOverTime;
 	public bool gameOver;
 	public GenericGhost[] ghosts;
+	public float blackValue;
 	// Use this for initialization
 	void Start () {
 		rect = new Rect(0,0, Screen.width, Screen.height);
@@ -54,10 +55,18 @@ public class RedDead : MonoBehaviour {
 		dangertemp1 =false;
 		dangertemp2 =false;
 		dangertemp3 =false;
+		gameOver = false;
+		blackValue = 0f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(Time.time <= gameOverTime){
+			blackValue -= Mathf.Clamp01(Time.deltaTime * fadeSpeed);
+			Debug.Log("Black alpha is "+blackValue);
+		}
+
+
 		checkDeathDist();
 		//totem = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
 		if(!danger1 && !danger2 && !danger3){
@@ -94,6 +103,7 @@ public class RedDead : MonoBehaviour {
 				source.clip = fasterbeat;
 				source.Play();
 				played3 = true;
+				gameOver = true;
 			}
 		}
 		else{
@@ -105,13 +115,17 @@ public class RedDead : MonoBehaviour {
 
 	public void checkDeathDist(){
 		float minDist = ghosts[0].playerDist;
+
 		foreach (GenericGhost ghost in ghosts) {
-			if(minDist > ghost.playerDist){
+			if(ghost.playerDist == 0){
+				//ignore it's not possible
+			}
+			else if(minDist > ghost.playerDist){
 				minDist = ghost.playerDist;
 			}
 		}
-			
-			//Debug.Log(playerDist);
+
+			Debug.Log(minDist);
 			
 			if (minDist < killZone) {
 				//kill player and respawn at last checkpoint
@@ -185,31 +199,38 @@ public class RedDead : MonoBehaviour {
 
 			}*/
 			if(danger1){
-				blinkTexture(red1,0f,.4f, alpha1,flashSpeed);
+				blinkTexture(red1,.5f,.8f, alpha1,flashSpeed);
 				alpha2 = 0f;
 				alpha3 = 0f;
 			}
 			else if(danger2){
-				blinkTexture(red2,.3f,.5f, alpha2,flashSpeed);
+				blinkTexture(red2,.5f,.8f, alpha2,flashSpeed);
 				alpha1 = 0f;
 				alpha3 = 0f;
 			}
 			else if(danger3){
-				blinkTexture(red3,.5f,1f, alpha3,flashSpeed);
-				blinkTexture(black,.5f,1f,blackAlpha, fadeSpeed);
+				blinkTexture(red3,.9f,1f, alpha3,flashSpeed);
+				blinkTexture(black,.8f,1f,blackAlpha, fadeSpeed);
 				alpha1 = 0f;
 				alpha2 = 0f;
-				gameOverTime =  Time.time + 20;
 				gameOver = true;
+				//blackValue = 1f;
 			}
 			else{
 				alpha1 = 0f;
 				alpha2 = 0f;
 				alpha3 = 0f;
 			}
-			if(Time.time >= gameOverTime && gameOver){
-				blinkTexture(black,1f,0f,blackAlpha, fadeSpeed);
-				gameOver = false;
+
+			if(Time.time <= gameOverTime){
+				GUI.color = new Color(1.0f, 1.0f, 1.0f, blackValue);
+				GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height),black);
+				GUI.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+				 
+			}
+			else{
+				Debug.Log("Not Game Over");
+				blackValue = 0f	;
 			}
 		}
 	}

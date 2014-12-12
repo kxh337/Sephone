@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CheckPoint : MonoBehaviour {
 	public bool activated;
+	public int value;
 	// Use this for initialization
 	void Start () {
 	
