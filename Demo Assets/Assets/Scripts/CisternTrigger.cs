@@ -19,7 +19,7 @@ public class CisternTrigger : MonoBehaviour {
 	void OnTriggerEnter(Collider other){
 		bool canPlay = GameObject.Find("YoyoTrigger").GetComponent<YoYoTrigger>().getPrompt();
 		if(other.gameObject.tag == "Player" && !played && canPlay){
-			audio.Play();
+			//audio.Play();
 			GameObject.FindGameObjectWithTag("CisternCamera").GetComponent("CameraSwitch").SendMessage("turnCutSceneOn");
 			played = true;
 		}
