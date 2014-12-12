@@ -70,10 +70,16 @@ function turnCutSceneOn()
 	cutScenePlaying = true;
 	audio.Play();
 	yield WaitForSeconds(4.0f);
+	if(animationNumber == 1)
+	{
+		Application.LoadLevel(0);
+		Screen.lockCursor = false;
+	}
 	if(camera2.animation.isPlaying == false)
 	{
 		mainCameraSwitch();
 	}
+	
 }
 
 
