@@ -19,6 +19,7 @@ public class Pause : MonoBehaviour {
 	public Texture2D optionsGlow;
 	public Texture2D resumeGlow;
 	public Texture2D saveGlow;
+	public Texture2D helpMenu;
 	Rect[] rects;
 
 	void Start() 
@@ -68,7 +69,11 @@ public class Pause : MonoBehaviour {
 				GUI.DrawTexture(rects[1], optionsGlow);
 				if(ev.isMouse && ev.type == EventType.mouseUp)
 				{
-					//Do options stuff here
+					GUI.DrawTexture (new Rect(0, 0, Screen.width, Screen.height), helpMenu);
+					if(ev.isMouse && ev.type == EventType.mouseUp)
+					{
+
+					}
 				}
 			}
 			else
