@@ -16,6 +16,7 @@ public class CheckPointManager : MonoBehaviour {
 	void Update () {
 		updateCheckPoint();
 		if(death.gameOver){
+
 			//player.rigidbody.velocity = Vector3.zero;
 			player.transform.position = currentCheckPoint.gameObject.transform.position;
 			player.transform.rotation = currentCheckPoint.gameObject.transform.rotation;
