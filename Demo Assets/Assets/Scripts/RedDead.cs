@@ -63,7 +63,7 @@ public class RedDead : MonoBehaviour {
 	void Update () {
 		if(Time.time <= gameOverTime){
 			blackValue -= Mathf.Clamp01(Time.deltaTime * fadeSpeed);
-			Debug.Log("Black alpha is "+blackValue);
+			//Debug.Log("Black alpha is "+blackValue);
 		}
 
 
@@ -125,7 +125,7 @@ public class RedDead : MonoBehaviour {
 			}
 		}
 
-			Debug.Log(minDist);
+			//Debug.Log(minDist);
 			
 			if (minDist < killZone) {
 				//kill player and respawn at last checkpoint
@@ -229,7 +229,7 @@ public class RedDead : MonoBehaviour {
 				 
 			}
 			else{
-				Debug.Log("Not Game Over");
+				//Debug.Log("Not Game Over");
 				blackValue = 0f	;
 			}
 		}

@@ -10,7 +10,7 @@ public class GhostJ : GenericGhost {
 	public float minDist;
 	public float speed;
 	public float pointDist;
-	private Transform nextPoint;
+	public Transform nextPoint;
 	public Renderer render;
 
 	// Use this for initialization

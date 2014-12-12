@@ -22,7 +22,7 @@ public class CheckPointManager : MonoBehaviour {
 			death.gameOverTime = Time.time + setGameOverTime;
 			death.gameOver = false;
 			death.blackValue = 1f;
-			Debug.Log("Game over time" + death.gameOverTime	);
+			//Debug.Log("Game over time" + death.gameOverTime	);
 		}
 	}
 
