@@ -48,6 +48,7 @@ public class Inventory : MonoBehaviour {
 	
 	void Update() 
 	{
+		Event e = Event.current;
 		if(Time.timeScale == 1)
 			Screen.lockCursor = true;
 		int canPause = GameObject.Find("Totem").GetComponent<GamePause>().canPaused;
